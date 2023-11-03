@@ -1,9 +1,15 @@
 import BoxCompartment from "./BoxCompartment"
 
-function MedicationBox() {
+function MedicationBox(props) {
+
+    const handleSelection = (compartmentNumber) => {
+        console.log("You have chosen compartment " + compartmentNumber)
+    }
+
     return (
         <div id="medication-box">
-            <BoxCompartment/>
+            {props.compartments.map(item => 
+            <BoxCompartment compartmentInfo={item} selected={handleSelection} key={item.compartment}/>)}
         </div>
     )
 }
