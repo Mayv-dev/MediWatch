@@ -36,3 +36,25 @@
     transform: rotate(360deg);
   }
 }
+
+.compartmentDiv {
+  border: 1px solid black;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  width:14.2%
+}
+
+.compartmentDivSelected {
+  border: 1px solid black;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  width:14.2%;
+  background-color: yellow;
+}
+
+#medication-box {
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+  width: 80%;
+}
