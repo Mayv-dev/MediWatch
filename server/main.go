@@ -1,7 +1,7 @@
 package main
 
 import (
-	"net/http"
+	"mediwatch/server/configs"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,13 +9,7 @@ import (
 func main() {
 	router := gin.Default()
 
-	router.GET("/", getHello)
+	configs.ConnectDB()
 
 	router.Run("localhost:4000")
-}
-
-func getHello(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"data": "Hello",
-	})
 }
