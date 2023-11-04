@@ -3,7 +3,7 @@ import { useState } from 'react'
 import CompartmentMenu from "./CompartmentMenu"
 
 function MedicationBox(props) {
-    const [chosenBox, setChosenBox] = useState()
+    const [chosenBox, setChosenBox] = useState({compartment: null})
 
     const handleSelection = (compartmentNumber) => {
         console.log("You have chosen compartment " + compartmentNumber)
@@ -15,10 +15,10 @@ function MedicationBox(props) {
         <div id="medication-box-container">
             <div id="medication-box">
                 {props.compartments.map(item =>
-                    <BoxCompartment compartmentInfo={item} colour={chosenBox === item.compartment} selected={handleSelection} key={item.compartment} />)
+                    <BoxCompartment compartmentInfo={item} colour={chosenBox.compartment === item.compartment} selected={handleSelection} key={item.compartment} />)
                 }
             </div>
-            {chosenBox !== undefined && <CompartmentMenu />}
+            {chosenBox.compartment !== null && <CompartmentMenu compartment={chosenBox}/>}
         </div>
     )
 }
