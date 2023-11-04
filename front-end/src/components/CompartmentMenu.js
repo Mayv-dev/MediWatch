@@ -3,7 +3,12 @@
 function CompartmentMenu(props) {
     return (
         <div id="compartment-menu">
-            <p>Compartment {props.compartment}</p>
+            <h3>Compartment {props.compartment.compartment}</h3>
+
+            <div id="dose-time">
+                <p>Time Until Dose</p>
+                <p>{props.compartment.doseDatetime}</p>
+            </div>
         </div>
     )
 }
