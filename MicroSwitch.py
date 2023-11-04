@@ -11,9 +11,15 @@ class MicroSwitch:
 
 
     def is_open(self) -> bool:
+        if self.openPin == -1:
+            return
+
         return GPIO.input(self.openPin)
     
 
     def is_closed(self) -> bool:
+        if self.closedPin == -1:
+            return
+        
         return GPIO.input(self.closedPin)
     
