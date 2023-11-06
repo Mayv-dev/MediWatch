@@ -8,6 +8,10 @@ class MicroSwitch:
     def __init__(self, openPin, closedPin):
         self.openPin = openPin
         self.closedPin = closedPin
+        GPIO.setwarnings(False)
+        GPIO.setmode(GPIO.BOARD)
+        GPIO.setup(openPin, GPIO.IN)
+        GPIO.setup(closedPin, GPIO.IN)
 
 
     def is_open(self) -> bool:
