@@ -24,7 +24,7 @@ func GetAllUsers(c *gin.Context) {
 	results, err := userCollection.Find(ctx, bson.M{})
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, views.UserView{Status: http.StatusInternalServerError, Message: "Error", Data: map[string]interface{}{"data": err.Error()}})
+		c.JSON(http.StatusInternalServerError, views.UserView{Status: http.StatusInternalServerError, Message: "Error", Data: err.Error()})
 		return
 	}
 
@@ -40,5 +40,5 @@ func GetAllUsers(c *gin.Context) {
 		users = append(users, user)
 	}
 
-	c.JSON(http.StatusOK, views.UserView{Status: http.StatusOK, Message: "Success", Data: map[string]interface{}{"data": users}})
+	c.JSON(http.StatusOK, views.UserView{Status: http.StatusOK, Message: "Success", Data: users})
 }
