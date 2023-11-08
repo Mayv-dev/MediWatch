@@ -1,4 +1,5 @@
 import RPi.GPIO as GPIO
+import time
 
 class LED:
     pin = -1
@@ -23,3 +24,15 @@ class LED:
             return
         
         GPIO.output(self.pin, GPIO.LOW)
+        
+    
+    def flash(self, numberOfFlashes, delayInSeconds):
+        if(self.pin == -1):
+            return
+        
+        for i in range(0, numberOfFlashes):
+            self.on()
+            time.sleep(delayInSeconds)
+            self.off()
+            time.sleep(delayInSeconds)
+            i = i+1
