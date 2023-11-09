@@ -5,7 +5,7 @@ class MicroSwitch:
     closedPin = -1
 
 
-    def __init__(self, openPin, closedPin):
+    def __init__(self, openPin, closedPin) -> None:
         self.openPin = openPin
         self.closedPin = closedPin
         GPIO.setwarnings(False)

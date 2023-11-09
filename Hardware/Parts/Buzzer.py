@@ -11,7 +11,7 @@ class Buzzer:
         GPIO.setup(pin, GPIO.OUT)
         
         
-    def buzz(self, numberOfBuzzes, pauseInSeconds, lengthOfBuzz=None):
+    def buzz(self, numberOfBuzzes, pauseInSeconds, lengthOfBuzz=None) -> None:
         if(lengthOfBuzz == None):
             lengthOfBuzz = pauseInSeconds
         

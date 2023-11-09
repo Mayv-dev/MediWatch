@@ -5,28 +5,28 @@ class LED:
     pin = -1
 
 
-    def __init__(self, pin):
+    def __init__(self, pin) -> None:
         self.pin = pin
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(pin, GPIO.OUT)
 
 
-    def on(self):
+    def on(self) -> None:
         if(self.pin == -1):
             return
         
         GPIO.output(self.pin, GPIO.HIGH)
 
 
-    def off(self):
+    def off(self) -> None:
         if(self.pin == -1):
             return
         
         GPIO.output(self.pin, GPIO.LOW)
         
     
-    def flash(self, numberOfFlashes, delayInSeconds):
+    def flash(self, numberOfFlashes, delayInSeconds) -> None:
         if(self.pin == -1):
             return
         
