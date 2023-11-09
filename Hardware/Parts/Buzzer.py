@@ -12,6 +12,9 @@ class Buzzer:
         
         
     def buzz(self, numberOfBuzzes, pauseInSeconds, lengthOfBuzz=None) -> None:
+        if(self.pin == -1):
+            return
+        
         if(lengthOfBuzz == None):
             lengthOfBuzz = pauseInSeconds
         
