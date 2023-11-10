@@ -36,7 +36,7 @@
         }
     ],
 
-    "histroy": [
+    "history": [
         {
             "datetime": "ISODate",
             "taken": "boolean",
