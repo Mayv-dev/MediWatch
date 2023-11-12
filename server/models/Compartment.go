@@ -3,6 +3,5 @@ package models
 import "go.mongodb.org/mongo-driver/bson/primitive"
 
 type Compartment struct {
-	Id          primitive.ObjectID `json:"id,omitempty"`
-	Medications []Medication       `json:"medications,omitempty"`
+	Id primitive.ObjectID `json:"id,omitempty"`
 }
