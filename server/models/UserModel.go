@@ -1,11 +1,13 @@
 package models
 
-import (
-	"go.mongodb.org/mongo-driver/bson/primitive"
-)
+import "go.mongodb.org/mongo-driver/bson/primitive"
 
 type User struct {
-	Id    primitive.ObjectID `json:"id,omitempty"`
-	Carer bool               `json:"carer" validate:"required"`
-	Email string             `json:"email,omitempty" validate:"required"`
+	Id          primitive.ObjectID `json:"id,omitempty"`
+	Email       string             `json:"email,omitempty" validate:"required"`
+	Password    string             `json:"password,omitempty" validate:"required"`
+	Pillbox     Pillbox            `json:"pillbox,omitempty"`
+	Medications []Medication       `json:"medications,omitempty"`
+	Schedule    []Schedule         `json:"schedule,omitempty"`
+	History     []History          `json:"history,omitempty"`
 }
