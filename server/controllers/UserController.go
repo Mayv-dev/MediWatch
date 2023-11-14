@@ -38,6 +38,7 @@ func GetAllUsers(c *gin.Context) {
 
 		if err = results.Decode(&user); err != nil {
 			c.JSON(http.StatusInternalServerError, views.UserView{Status: http.StatusInternalServerError, Message: "Error", Data: err.Error()})
+			return
 		}
 
 		users = append(users, user)
