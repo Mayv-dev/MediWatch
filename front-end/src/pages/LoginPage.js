@@ -1,5 +1,5 @@
 // The form method should be switched to POST asap
-
+import {SERVER_HOST} from "../config/global_constants";
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
 
@@ -12,12 +12,19 @@ function LoginPage() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        //The below logs must be removed, especially password
-        console.log("Username: " + inputs.username)
-        console.log("Password: " + inputs.password)
-
-        successfulLogin("/home")
+        let userFound = false;
+        fetch(`${SERVER_HOST}/users`, {
+            method: "GET",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .then((response) => response.json())
+        .then((responseData) => responseData.data.map(user => user["email"] == inputs["email"] && user["password"] == inputs["password"] ? successfulLogin("/home"):false))
+        .catch((error) => {
+            console.error('Error')
+        })
     }
 
     const handleChange = (e) => {
@@ -27,7 +34,7 @@ function LoginPage() {
     //The icon to reveal/hide password could be improved by us, as the option disappears entirely after clicking away
     return (
         <form onSubmit={handleSubmit}>
-            <input name="username" onChange={handleChange}/>
+            <input name="email" onChange={handleChange}/>
             <input name="password" type="password" onChange={handleChange}/>
             <input type="submit" value="Enter App"/>
         </form>
