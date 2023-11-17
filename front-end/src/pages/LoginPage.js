@@ -33,10 +33,11 @@ function LoginPage() {
 
     //The icon to reveal/hide password could be improved by us, as the option disappears entirely after clicking away
     return (
-        <form onSubmit={handleSubmit}>
-            <input name="email" onChange={handleChange}/>
-            <input name="password" type="password" onChange={handleChange}/>
-            <input type="submit" value="Enter App"/>
+        <form className="w-screen h-screen flex flex-col align-center justify-center items-center" onSubmit={handleSubmit}>
+            <h1 class="text-5xl text-yellow-200 my-4">MediWatch</h1>
+            <input className="my-2 border-2 border-white p-1 rounded-sm bg-slate-100" placeholder="Email" name="email" onChange={handleChange}/>
+            <input className="my-2 border-2 border-white p-1 rounded-sm bg-slate-100" placeholder="Password" name="password" type="password" onChange={handleChange}/>
+            <input className="my-3 border-2 border-black p-2 rounded-lg bg-blue-300" type="submit" value="Enter App"/>
         </form>
     )
 }
