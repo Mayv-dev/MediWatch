@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
     const [inputs, setInputs] = useState({}) 
+    const [invalidCredentials, setInvalidCredentials] = useState(false) 
     const successfulLogin = useNavigate() // As the <redirect> component used in Full stack Development has been discontinued, we must now use useNavigate()
                                           // used code by Noushad from https://stackoverflow.com/questions/34735580/how-to-do-a-redirect-to-another-route-with-react-router
 
@@ -21,7 +22,7 @@ function LoginPage() {
             }
         })
         .then((response) => response.json())
-        .then((responseData) => responseData.data.map(user => user["email"] == inputs["email"] && user["password"] == inputs["password"] ? successfulLogin("/home"):false))
+        .then((responseData) => responseData.data.map(user => user["email"] == inputs["email"] && user["password"] == inputs["password"] ? successfulLogin("/home"): setInvalidCredentials(true)))
         .catch((error) => {
             console.error('Error')
         })
@@ -37,6 +38,7 @@ function LoginPage() {
             <h1 class="text-5xl text-yellow-200 my-4">MediWatch</h1>
             <input className="my-2 border-2 border-white p-1 rounded-sm bg-slate-100" placeholder="Email" name="email" onChange={handleChange}/>
             <input className="my-2 border-2 border-white p-1 rounded-sm bg-slate-100" placeholder="Password" name="password" type="password" onChange={handleChange}/>
+            {invalidCredentials ? <div className="bg-rose-600 p-2 text-white"><p>The supplied user information is invalid, please try again</p></div>:null}
             <input className="my-3 border-2 border-black p-2 rounded-lg bg-blue-300" type="submit" value="Enter App"/>
         </form>
     )
