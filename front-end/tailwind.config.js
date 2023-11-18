@@ -24,7 +24,12 @@ module.exports = {
 
         commonBG:{
           100:"#F5F5DC",
-          900:"#000000"},
+          900:"#211A53"},
+
+        commonTitle:{
+          100:"#3e3eFF",
+          900:"#FFe000",
+        }
       }
     }
   },
