@@ -17,7 +17,7 @@ function HomePage() {
         return (
             <div className="w-screen h-screen flex flex-col align-center justify-center items-center">
                 <h1>This is the HomePage</h1>
-                <MedicationBox compartments={state.loggedInUser.pillbox.compartments} />
+                <MedicationBox compartments={state.loggedInUser} />
             </ div>
         )
     }

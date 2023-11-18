@@ -14,8 +14,8 @@ function MedicationBox(props) {
     return (
         <div id="medication-box-container" className="w-10/12">
             <div id="medication-box" className="w-100">
-                {props.compartments.map(item =>
-                    <BoxCompartment compartmentInfo={item.id} colour={chosenBox.compartment === item.compartment} selected={handleSelection} key={item.compartment} />)
+                {props.compartments.pillbox.compartments.map(item =>
+                    <BoxCompartment compartmentInfo={item} schedule={props.compartments.schedule} colour={chosenBox.compartment === item.compartment} selected={handleSelection} key={item.compartment} />)
                 }
             </div>
             {chosenBox.compartment !== null && <CompartmentMenu compartment={chosenBox}/>}
