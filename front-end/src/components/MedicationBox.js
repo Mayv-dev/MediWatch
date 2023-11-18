@@ -4,22 +4,20 @@ import CompartmentMenu from "./CompartmentMenu"
 
 function MedicationBox(props) {
     const [chosenBox, setChosenBox] = useState({compartment: null})
+    
+    const pillbox = props.userInfo.pillbox
+    const schedule = props.userInfo.schedule
 
-    const handleSelection = (compartmentNumber) => {
-        console.log("You have chosen compartment " + compartmentNumber)
-        console.log(props.compartments.pillbox.compartments.find(item => item.id == compartmentNumber))
-        setChosenBox(props.compartments.pillbox.compartments.find(item => item.id == compartmentNumber).id)
-        console.log(chosenBox)
-    }
-
+    const handleSelection = (chosenCompartment) => setChosenBox(pillbox.compartments.find(compartment => compartment.id == chosenCompartment).id)
+    
     return (
         <div id="medication-box-container" className="w-10/12">
             <div id="medication-box" className="w-100">
-                {props.compartments.pillbox.compartments.map(item =>
-                    <BoxCompartment compartmentInfo={item} schedule={props.compartments.schedule} colour={chosenBox === item.id} selected={handleSelection} key={item.compartment} />)
+                {pillbox.compartments.map(item =>
+                    <BoxCompartment key={item.id} identifier={item.id} schedule={schedule} colour={chosenBox === item.id} onSelection={handleSelection}  />)
                 }
             </div>
-            {chosenBox.compartment !== null && <CompartmentMenu schedule={props.compartments.schedule} compartment={chosenBox}/>}
+            {chosenBox.compartment !== null && <CompartmentMenu schedule={schedule} selectedCompartment={chosenBox}/>}
         </div>
     )
 }
