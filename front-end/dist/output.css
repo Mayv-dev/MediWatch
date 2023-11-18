@@ -627,21 +627,6 @@ video {
   width: 100vw;
 }
 
-.w-fit {
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
-}
-
-.w-max {
-  width: -webkit-max-content;
-  width: max-content;
-}
-
-.w-10 {
-  width: 2.5rem;
-}
-
 .flex-col {
   flex-direction: column;
 }

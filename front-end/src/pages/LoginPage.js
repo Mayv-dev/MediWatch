@@ -22,7 +22,7 @@ function LoginPage() {
             }
         })
         .then((response) => response.json())
-        .then((responseData) => responseData.data.map(user => user["email"] == inputs["email"] && user["password"] == inputs["password"] ? successfulLogin("/home"): setInvalidCredentials(true)))
+        .then((responseData) => responseData.data.map(user => user["email"] == inputs["email"] && user["password"] == inputs["password"] ? successfulLogin("/home", {state:{loggedInUser:user}}): setInvalidCredentials(true)))
         .catch((error) => {
             console.error('Error')
         })

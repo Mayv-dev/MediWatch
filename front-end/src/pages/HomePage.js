@@ -1,19 +1,14 @@
+import { useLocation, useNavigate } from "react-router-dom";
 import MedicationBox from "../components/MedicationBox"
 import { useState, useEffect } from "react"
 
-// let temp = [
-//     { "compartment": "1", "doseDatetime": "3-11-23 17:00" },
-//     { "compartment": "2", "doseDatetime": "3-11-23 17:00" },
-//     { "compartment": "3", "doseDatetime": "3-11-23 17:00" },
-//     { "compartment": "4", "doseDatetime": "3-11-23 17:00" },
-//     { "compartment": "5", "doseDatetime": "3-11-23 17:00" },
-//     { "compartment": "6", "doseDatetime": "3-11-23 17:00" },
-//     { "compartment": "7", "doseDatetime": "3-11-23 17:00" },
-// ]
+
 
 function HomePage() {
     const URL = "https://demo0726818.mockable.io/dose-data"
     const [data, setData] = useState();
+    const {state} = useLocation(); // useLocation code taken from Drew Reese's answer to https://stackoverflow.com/questions/69714423/how-do-you-pass-data-when-using-the-navigate-function-in-react-router-v6
+    const noLogin = useNavigate()
 
     useEffect(() => {
         fetch(URL, {
@@ -32,6 +27,9 @@ function HomePage() {
     }, [])
 
     if(data) {
+        console.log("State:")
+        console.log(state)
+        if(state == null) noLogin("/login")
         return (
             <div className="w-screen h-screen flex flex-col align-center justify-center items-center">
                 <h1>This is the HomePage</h1>
@@ -42,7 +40,7 @@ function HomePage() {
 
     return (
         <>
-            <h1>This is the HomePage</h1>
+            <h1>Loading</h1>
         </>
     )
 }
