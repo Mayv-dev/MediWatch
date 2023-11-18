@@ -33,10 +33,10 @@ function HomePage() {
 
     if(data) {
         return (
-            <>
+            <div className="w-screen h-screen flex flex-col align-center justify-center items-center">
                 <h1>This is the HomePage</h1>
                 <MedicationBox compartments={data} />
-            </>
+            </ div>
         )
     } 
 
