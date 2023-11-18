@@ -15,7 +15,7 @@ function HomePage() {
 
     if(state != null) {
         return (
-            <div className="w-screen h-screen flex flex-col align-center justify-center items-center">
+            <div className="w-screen bg-commonBG-100 h-screen flex flex-col align-center justify-center items-center">
                 <h1>This is the HomePage</h1>
                 <MedicationBox compartments={state.loggedInUser} />
             </ div>

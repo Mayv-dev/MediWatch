@@ -34,8 +34,8 @@ function LoginPage() {
 
     //The icon to reveal/hide password could be improved by us, as the option disappears entirely after clicking away
     return (
-        <form className="w-screen h-screen flex flex-col align-center justify-center items-center" onSubmit={handleSubmit}>
-            <h1 class="text-5xl text-yellow-200 my-4">MediWatch</h1>
+        <form className="w-screen bg-commonBG-100 h-screen flex flex-col align-center justify-center items-center" onSubmit={handleSubmit}>
+            <h1 class="text-5xl text-green-600 my-4">MediWatch</h1>
             <input className="my-2 border-2 border-white p-1 rounded-sm bg-slate-100" placeholder="Email" name="email" onChange={handleChange}/>
             <input className="my-2 border-2 border-white p-1 rounded-sm bg-slate-100" placeholder="Password" name="password" type="password" onChange={handleChange}/>
             {invalidCredentials ? <div className="bg-rose-600 p-2 text-white"><p>The supplied user information is invalid, please try again</p></div>:null}

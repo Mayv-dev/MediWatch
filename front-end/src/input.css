@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  background-color: rgb(44, 35, 104);
-}
 
 .App {
   text-align: center;
