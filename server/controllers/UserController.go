@@ -18,6 +18,36 @@ import (
 var userCollection *mongo.Collection = configs.GetCollection(configs.DB, "Users")
 var validate = validator.New()
 
+func GetUser(c *gin.Context) {
+	id := c.Param("id")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	var user models.User
+
+	objId, err := primitive.ObjectIDFromHex(id)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, views.UserView{Status: http.StatusBadRequest, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	err = userCollection.FindOne(ctx, bson.M{"id": objId}).Decode(&user)
+
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			c.JSON(http.StatusNotFound, views.UserView{Status: http.StatusNotFound, Message: "Not Found", Data: err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusInternalServerError, views.UserView{Status: http.StatusInternalServerError, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusFound, views.UserView{Status: http.StatusFound, Message: "Success", Data: user})
+}
+
 func GetAllUsers(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -44,7 +74,7 @@ func GetAllUsers(c *gin.Context) {
 		users = append(users, user)
 	}
 
-	c.JSON(http.StatusOK, views.UserView{Status: http.StatusOK, Message: "Success", Data: users})
+	c.JSON(http.StatusFound, views.UserView{Status: http.StatusFound, Message: "Success", Data: users})
 }
 
 func CreateUser(c *gin.Context) {
