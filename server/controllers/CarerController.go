@@ -151,3 +151,29 @@ func UpdateCarer(c *gin.Context) {
 
 	c.JSON(http.StatusOK, views.UserView{Status: http.StatusOK, Message: "Updated", Data: updatedCarer})
 }
+
+func DeleteCarer(c *gin.Context) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	id := c.Param("id")
+	objId, err := primitive.ObjectIDFromHex(id)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, views.UserView{Status: http.StatusBadRequest, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	result, err := carerCollection.DeleteOne(ctx, bson.M{"id": objId})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, views.UserView{Status: http.StatusInternalServerError, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	if result.DeletedCount < 1 {
+		c.JSON(http.StatusNotFound, views.UserView{Status: http.StatusNotFound, Message: "Not Found", Data: "Matching id not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, views.UserView{Status: http.StatusOK, Message: "Deleted", Data: "Carer deleted"})
+}
