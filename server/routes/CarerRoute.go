@@ -8,4 +8,5 @@ import (
 
 func CarerRoute(router *gin.Engine) {
 	router.POST("/carer", controllers.CreateCarer)
+	router.GET("/carer/:id", controllers.GetCarer)
 }
