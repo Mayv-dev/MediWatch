@@ -1,15 +1,12 @@
 // The form method should be switched to POST asap
 import {SERVER_HOST} from "../config/global_constants";
 import { useState } from "react"
-import { useNavigate } from "react-router-dom";
 
 // Form code was made with help from https://www.w3schools.com/react/react_forms.asp
 
-function LoginPage() {
+function LoginPage(props) {
     const [inputs, setInputs] = useState({}) 
     const [invalidCredentials, setInvalidCredentials] = useState(false) 
-    const successfulLogin = useNavigate() // As the <redirect> component used in Full stack Development has been discontinued, we must now use useNavigate()
-                                          // used code by Noushad from https://stackoverflow.com/questions/34735580/how-to-do-a-redirect-to-another-route-with-react-router
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -24,7 +21,7 @@ function LoginPage() {
         .then((response) => response.json())
         .then((responseData) => responseData.data.map(user => user["email"] == inputs["email"] && 
                                                               user["password"] == inputs["password"] ? 
-                                                              successfulLogin("/home", {state:{loggedInUser:user}}) : setInvalidCredentials(true)))
+                                                              props.handleUserData(user) : setInvalidCredentials(true)))
         .catch((error) => {
             console.error('Error')
         })
