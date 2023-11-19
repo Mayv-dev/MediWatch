@@ -104,3 +104,50 @@ func GetAllCarers(c *gin.Context) {
 
 	c.JSON(http.StatusOK, views.UserView{Status: http.StatusOK, Message: "Success", Data: carers})
 }
+
+func UpdateCarer(c *gin.Context) {
+	id := c.Param("id")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	var carer models.Carer
+
+	objId, err := primitive.ObjectIDFromHex(id)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, views.UserView{Status: http.StatusBadRequest, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	if err = c.BindJSON(&carer); err != nil {
+		c.JSON(http.StatusBadRequest, views.UserView{Status: http.StatusBadRequest, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	if err := validate.Struct(&carer); err != nil {
+		c.JSON(http.StatusBadRequest, views.UserView{Status: http.StatusBadRequest, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	update := bson.M{"email": carer.Email, "password": carer.Password}
+
+	result, err := carerCollection.UpdateOne(ctx, bson.M{"id": objId}, bson.M{"$set": update})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, views.UserView{Status: http.StatusInternalServerError, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	var updatedCarer models.Carer
+
+	if result.MatchedCount == 1 {
+		err := carerCollection.FindOne(ctx, bson.M{"id": objId}).Decode(&updatedCarer)
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, views.UserView{Status: http.StatusInternalServerError, Message: "Error", Data: err.Error()})
+			return
+		}
+	}
+
+	c.JSON(http.StatusOK, views.UserView{Status: http.StatusOK, Message: "Updated", Data: updatedCarer})
+}

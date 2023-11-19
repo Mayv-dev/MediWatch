@@ -10,4 +10,5 @@ func CarerRoute(router *gin.Engine) {
 	router.POST("/carer", controllers.CreateCarer)
 	router.GET("/carer/:id", controllers.GetCarer)
 	router.GET("/carers", controllers.GetAllCarers)
+	router.PUT("/carer/:id", controllers.UpdateCarer)
 }
