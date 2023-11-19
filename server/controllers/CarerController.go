@@ -75,3 +75,32 @@ func GetCarer(c *gin.Context) {
 
 	c.JSON(http.StatusOK, views.UserView{Status: http.StatusOK, Message: "Success", Data: carer})
 }
+
+func GetAllCarers(c *gin.Context) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	var carers []models.Carer
+
+	results, err := carerCollection.Find(ctx, bson.M{})
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, views.UserView{Status: http.StatusInternalServerError, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	defer results.Close(ctx)
+
+	for results.Next(ctx) {
+		var carer models.Carer
+
+		if err = results.Decode(&carer); err != nil {
+			c.JSON(http.StatusInternalServerError, views.UserView{Status: http.StatusInternalServerError, Message: "Error", Data: err.Error()})
+			return
+		}
+
+		carers = append(carers, carer)
+	}
+
+	c.JSON(http.StatusOK, views.UserView{Status: http.StatusOK, Message: "Success", Data: carers})
+}
