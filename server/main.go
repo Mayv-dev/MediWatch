@@ -19,6 +19,7 @@ func main() {
 	configs.ConnectDB()
 
 	routes.UserRoute(router)
+	routes.CarerRoute(router)
 
 	router.Run("localhost:4000")
 }
