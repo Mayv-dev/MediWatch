@@ -45,7 +45,7 @@ func GetUser(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusFound, views.UserView{Status: http.StatusFound, Message: "Success", Data: user})
+	c.JSON(http.StatusOK, views.UserView{Status: http.StatusOK, Message: "Success", Data: user})
 }
 
 func GetAllUsers(c *gin.Context) {
@@ -74,7 +74,7 @@ func GetAllUsers(c *gin.Context) {
 		users = append(users, user)
 	}
 
-	c.JSON(http.StatusFound, views.UserView{Status: http.StatusFound, Message: "Success", Data: users})
+	c.JSON(http.StatusOK, views.UserView{Status: http.StatusOK, Message: "Success", Data: users})
 }
 
 func CreateUser(c *gin.Context) {
@@ -106,4 +106,51 @@ func CreateUser(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, views.UserView{Status: http.StatusCreated, Message: "success", Data: result})
+}
+
+func UpdateUser(c *gin.Context) {
+	id := c.Param("id")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	var user models.User
+
+	objId, err := primitive.ObjectIDFromHex(id)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, views.UserView{Status: http.StatusBadRequest, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	if err = c.BindJSON(&user); err != nil {
+		c.JSON(http.StatusBadRequest, views.UserView{Status: http.StatusBadRequest, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	if err := validate.Struct(&user); err != nil {
+		c.JSON(http.StatusBadRequest, views.UserView{Status: http.StatusBadRequest, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	update := bson.M{"email": user.Email, "password": user.Password}
+
+	result, err := userCollection.UpdateOne(ctx, bson.M{"id": objId}, bson.M{"$set": update})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, views.UserView{Status: http.StatusInternalServerError, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	var updatedUser models.User
+
+	if result.MatchedCount == 1 {
+		err := userCollection.FindOne(ctx, bson.M{"id": objId}).Decode(&updatedUser)
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, views.UserView{Status: http.StatusInternalServerError, Message: "Error", Data: err.Error()})
+			return
+		}
+	}
+
+	c.JSON(http.StatusOK, views.UserView{Status: http.StatusOK, Message: "Updated", Data: updatedUser})
 }
