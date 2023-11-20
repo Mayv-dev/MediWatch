@@ -231,3 +231,44 @@ func RegisterUser(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, views.UserView{Status: http.StatusCreated, Message: "success", Data: result})
 }
+
+func LoginUser(c *gin.Context) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	var user models.User
+
+	if err := c.BindJSON(&user); err != nil {
+		c.JSON(http.StatusBadRequest, views.UserView{Status: http.StatusBadRequest, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	if validationErr := validate.Struct(&user); validationErr != nil {
+		c.JSON(http.StatusBadRequest, views.UserView{Status: http.StatusBadRequest, Message: "Error", Data: validationErr.Error()})
+		return
+	}
+
+	loginUser := models.User{
+		Email:    user.Email,
+		Password: user.Password,
+	}
+
+	err := userCollection.FindOne(ctx, bson.M{"email": loginUser.Email}).Decode(&user)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			c.JSON(http.StatusNotFound, views.UserView{Status: http.StatusNotFound, Message: "Not Found", Data: err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusInternalServerError, views.UserView{Status: http.StatusInternalServerError, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginUser.Password))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, views.UserView{Status: http.StatusBadRequest, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, views.UserView{Status: http.StatusOK, Message: "Success", Data: loginUser})
+}
