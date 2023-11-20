@@ -21,6 +21,7 @@ func main() {
 	routes.UserRoute(router)
 	routes.CarerRoute(router)
 	routes.UserHistoryRoute(router)
+	routes.UserScheduleRouter(router)
 
 	router.Run("localhost:4000")
 }
