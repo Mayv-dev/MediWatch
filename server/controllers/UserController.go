@@ -13,6 +13,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var userCollection *mongo.Collection = configs.GetCollection(configs.DB, "Users")
@@ -179,4 +180,54 @@ func DeleteUser(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, views.UserView{Status: http.StatusOK, Message: "Deleted", Data: "User deleted"})
+}
+
+func RegisterUser(c *gin.Context) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	var user models.User
+
+	if err := c.BindJSON(&user); err != nil {
+		c.JSON(http.StatusBadRequest, views.UserView{Status: http.StatusBadRequest, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	if validationErr := validate.Struct(&user); validationErr != nil {
+		c.JSON(http.StatusBadRequest, views.UserView{Status: http.StatusBadRequest, Message: "Error", Data: validationErr.Error()})
+		return
+	}
+
+	passwordHash, err := bcrypt.GenerateFromPassword([]byte(user.Password), 8)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, views.UserView{Status: http.StatusInternalServerError, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	newUser := models.User{
+		Id:       primitive.NewObjectID(),
+		Email:    user.Email,
+		Password: string(passwordHash),
+	}
+
+	err = userCollection.FindOne(ctx, bson.M{"email": newUser.Email}).Decode(&user)
+
+	if err != nil && err != mongo.ErrNoDocuments {
+		c.JSON(http.StatusInternalServerError, views.UserView{Status: http.StatusInternalServerError, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	if err != mongo.ErrNoDocuments {
+		c.JSON(http.StatusBadRequest, views.UserView{Status: http.StatusNotFound, Message: "User already exists", Data: "User already exists"})
+		return
+	}
+
+	result, err := userCollection.InsertOne(ctx, newUser)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, views.UserView{Status: http.StatusInternalServerError, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusCreated, views.UserView{Status: http.StatusCreated, Message: "success", Data: result})
 }
