@@ -9,4 +9,5 @@ import (
 func UserHistoryRoute(router *gin.Engine) {
 	router.GET("user/:id/history", controllers.GetAllUserHistory)
 	router.PUT("user/:id/history", controllers.CreateUserHistory)
+	router.DELETE("user/:id/history/:hId", controllers.DeleteUserHistory)
 }

@@ -52,6 +52,7 @@ func CreateUserHistory(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, views.UserView{Status: http.StatusBadRequest, Message: "Error", Data: err.Error()})
+		return
 	}
 
 	var user models.User
@@ -72,6 +73,50 @@ func CreateUserHistory(c *gin.Context) {
 	result, err := userCollection.UpdateOne(ctx, bson.M{"id": objId}, bson.M{"$push": bson.M{"history": update}})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, views.UserView{Status: http.StatusInternalServerError, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	if result.MatchedCount == 1 {
+		err := userCollection.FindOne(ctx, bson.M{"id": objId}).Decode(&user)
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, views.UserView{Status: http.StatusInternalServerError, Message: "Error", Data: err.Error()})
+			return
+		}
+	}
+
+	historyList := user.History
+
+	c.JSON(http.StatusOK, views.UserView{Status: http.StatusOK, Message: "success", Data: historyList})
+}
+
+func DeleteUserHistory(c *gin.Context) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	id := c.Param("id")
+	hId := c.Param("hId")
+
+	var user models.User
+
+	objId, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, views.UserView{Status: http.StatusBadRequest, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	hObjId, err := primitive.ObjectIDFromHex(hId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, views.UserView{Status: http.StatusBadRequest, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	update := bson.M{"id": hObjId}
+
+	result, err := userCollection.UpdateOne(ctx, bson.M{"id": objId}, bson.M{"$pull": bson.M{"history": update}})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, views.UserView{Status: http.StatusInternalServerError, Message: "Error", Data: err.Error()})
+		return
 	}
 
 	if result.MatchedCount == 1 {
