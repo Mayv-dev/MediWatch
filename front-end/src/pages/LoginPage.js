@@ -1,23 +1,30 @@
 // The form method should be switched to POST asap
-
+import {SERVER_HOST} from "../config/global_constants";
 import { useState } from "react"
-import { useNavigate } from "react-router-dom";
 
 // Form code was made with help from https://www.w3schools.com/react/react_forms.asp
 
-function LoginPage() {
+function LoginPage(props) {
     const [inputs, setInputs] = useState({}) 
-    const successfulLogin = useNavigate() // As the <redirect> component used in Full stack Development has been discontinued, we must now use useNavigate()
-                                          // used code by Noushad from https://stackoverflow.com/questions/34735580/how-to-do-a-redirect-to-another-route-with-react-router
+    const [invalidCredentials, setInvalidCredentials] = useState(false) 
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        //The below logs must be removed, especially password
-        console.log("Username: " + inputs.username)
-        console.log("Password: " + inputs.password)
-
-        successfulLogin("/home")
+        let userFound = false;
+        fetch(`${SERVER_HOST}/users`, {
+            method: "GET",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .then((response) => response.json())
+        .then((responseData) => responseData.data.map(user => user["email"] == inputs["email"] && 
+                                                              user["password"] == inputs["password"] ? 
+                                                              props.handleUserData(user) : setInvalidCredentials(true)))
+        .catch((error) => {
+            console.error('Error')
+        })
     }
 
     const handleChange = (e) => {
@@ -26,10 +33,28 @@ function LoginPage() {
 
     //The icon to reveal/hide password could be improved by us, as the option disappears entirely after clicking away
     return (
-        <form onSubmit={handleSubmit}>
-            <input name="username" onChange={handleChange}/>
-            <input name="password" type="password" onChange={handleChange}/>
-            <input type="submit" value="Enter App"/>
+        <form className="w-screen bg-commonBG-900 h-screen flex flex-col align-center justify-center items-center" onSubmit={handleSubmit}>
+
+            <h1 class="text-5xl text-commonTitle-900 my-4">MediWatch</h1>
+            
+            <input 
+                className="my-2 border-2 border-white p-1 rounded-sm bg-slate-100" 
+                placeholder="Email" 
+                name="email" 
+                onChange={handleChange}
+            />
+            <input 
+                className="my-2 border-2 border-white p-1 rounded-sm bg-slate-100" 
+                placeholder="Password" 
+                name="password" 
+                type="password" 
+                onChange={handleChange}
+            />
+
+            {invalidCredentials ? <div className="bg-rose-600 p-2 text-white"><p>The supplied user information is invalid, please try again</p></div>:null}
+            
+            <input className="my-3 border-2 border-black p-2 rounded-lg bg-blue-300" type="submit" value="Enter App"/>
+
         </form>
     )
 }

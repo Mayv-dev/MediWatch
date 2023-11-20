@@ -1,3 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
 .App {
   text-align: center;
 }
@@ -41,7 +46,6 @@
   border: 1px solid black;
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
-  width:14.2%;
   cursor: pointer;
 }
 
@@ -49,7 +53,6 @@
   border: 1px solid black;
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
-  width:14.2%;
   background-color: yellow;
   cursor: pointer;
 }
@@ -64,13 +67,10 @@
 #medication-box {
   display: flex;
   flex-direction: row;
-  margin: auto;
-  width: 80%;
 }
 
 #compartment-menu {
   border: 1px solid black;
   margin: 10px 0;
   text-align: center;
-  width: 40%;
 }
