@@ -68,7 +68,12 @@ func CreateUserMedication(c *gin.Context) {
 		return
 	}
 
-	update := bson.M{"id": primitive.NewObjectID(), "name": medication.Name}
+	update := bson.M{
+		"id":            primitive.NewObjectID(),
+		"name":          medication.Name,
+		"pilldose":      medication.PillDose,
+		"numberofpills": medication.NumberOfPills,
+	}
 
 	result, err := userCollection.UpdateOne(ctx, bson.M{"id": objId}, bson.M{"$push": bson.M{"medications": update}})
 	if err != nil {

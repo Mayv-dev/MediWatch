@@ -218,11 +218,18 @@ func RegisterUser(c *gin.Context) {
 		NumberCompartments: defaultNumberCompartments,
 	}
 
+	newMedications := []models.Medication{}
+	newSchedule := []models.Schedule{}
+	newHistory := []models.History{}
+
 	newUser := models.User{
-		Id:       primitive.NewObjectID(),
-		Email:    user.Email,
-		Password: string(passwordHash),
-		Pillbox:  newPillbox,
+		Id:          primitive.NewObjectID(),
+		Email:       user.Email,
+		Password:    string(passwordHash),
+		Pillbox:     newPillbox,
+		Medications: newMedications,
+		Schedule:    newSchedule,
+		History:     newHistory,
 	}
 
 	err = userCollection.FindOne(ctx, bson.M{"email": newUser.Email}).Decode(&user)

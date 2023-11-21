@@ -68,7 +68,12 @@ func CreateUserHistory(c *gin.Context) {
 		return
 	}
 
-	update := bson.M{"id": primitive.NewObjectID(), "datetime": history.DateTime, "taken": history.Taken, "medications": history.Medications}
+	update := bson.M{
+		"id":          primitive.NewObjectID(),
+		"datetime":    history.DateTime,
+		"taken":       history.Taken,
+		"medications": history.Medications,
+	}
 
 	result, err := userCollection.UpdateOne(ctx, bson.M{"id": objId}, bson.M{"$push": bson.M{"history": update}})
 	if err != nil {

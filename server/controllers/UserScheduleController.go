@@ -68,7 +68,12 @@ func CreateUserSchedule(c *gin.Context) {
 		return
 	}
 
-	update := bson.M{"id": primitive.NewObjectID(), "datetime": schedule.DateTime, "medications": schedule.Medications}
+	update := bson.M{
+		"id":          primitive.NewObjectID(),
+		"datetime":    schedule.DateTime,
+		"compartment": schedule.Compartment,
+		"medications": schedule.Medications,
+	}
 
 	result, err := userCollection.UpdateOne(ctx, bson.M{"id": objId}, bson.M{"$push": bson.M{"schedule": update}})
 	if err != nil {
