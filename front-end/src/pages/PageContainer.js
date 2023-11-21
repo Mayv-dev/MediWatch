@@ -3,6 +3,7 @@ import { useState } from "react"
 import LoginPage from "./LoginPage";
 import HomePage from "./HomePage";
 import CalendarPage from "./CalendarPage";
+import SchedulePage from "./SchedulePage";
 
 function PageContainer() {
     const [userData, setUserData] = useState()
@@ -19,8 +20,9 @@ function PageContainer() {
         <>
         <Navbar pageChange={handlePageSwitch}/>
         {userData == null ? <LoginPage handleUserData={handleUserData}/> : null}
-        {currentPage == "home" && currentPage != "calendar" ? <HomePage loggedInUser={userData}/> : null}
-        {currentPage == "calendar" && currentPage != "home" ? <CalendarPage /> : null}
+        {currentPage == "home" && currentPage != "calendar" && currentPage != "schedule" ? <HomePage loggedInUser={userData}/> : null}
+        {currentPage == "calendar" && currentPage != "home" && currentPage != "schedule" ? <CalendarPage /> : null}
+        {currentPage == "schedule" && currentPage != "home" && currentPage != "calendar" ? <SchedulePage loggedInUser={userData}/> : null}
         </>
     )
 }
