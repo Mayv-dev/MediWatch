@@ -22,7 +22,7 @@ function PageContainer() {
         {userData == null ? <LoginPage handleUserData={handleUserData}/> : null}
         {currentPage == "home" && currentPage != "calendar" && currentPage != "schedule" ? <HomePage loggedInUser={userData}/> : null}
         {currentPage == "calendar" && currentPage != "home" && currentPage != "schedule" ? <CalendarPage /> : null}
-        {currentPage == "schedule" && currentPage != "home" && currentPage != "calendar" ? <SchedulePage /> : null}
+        {currentPage == "schedule" && currentPage != "home" && currentPage != "calendar" ? <SchedulePage loggedInUser={userData}/> : null}
         </>
     )
 }
