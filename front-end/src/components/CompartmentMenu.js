@@ -1,35 +1,38 @@
 import { useState , useEffect } from "react"
 
 function CompartmentMenu(props) {
-    //TODO: Exchange time.medication ids with props.medications names in line 28
-    let times = []
+    let doses = []
     let medications = []
+    let date, hours, minutes
+
     let [selectedMedications, setSelectedMedications] = useState([])
     useEffect(()=> {
         setSelectedMedications([])
     },[props.selectedCompartment])
 
-    let date, hours, minutes, timestring
-    props.schedule.map(scheduledDose => scheduledDose.compartment == props.selectedCompartment ? times.push(scheduledDose) : null)
-    times = times.map(time => {
-        date = new Date(time.datetime)
+    props.schedule.map(scheduledDose => scheduledDose.compartment == props.selectedCompartment ? doses.push(scheduledDose) : null)
+
+    doses = doses.map(dose => {
         medications = []
-        if(time.medications != undefined) time.medications.map(medication => medications.push(medication))
-        console.log({'time':date,'medications':medications})
+        date = new Date(dose.datetime)
+        if(dose.medications != undefined) dose.medications.map(medication => medications.push(medication))
         return {'time':date,'medications':medications}
     })
-    times.sort((a,b) => a.time > b.time ? 1 : -1)
-    times = times.map(time => {
-        hours = time.time.getHours()
-        if (hours < 10) hours = `0${hours}`
-        minutes = time.time.getMinutes()
-        if (minutes < 10) minutes = `0${minutes}`
-        timestring = hours + ":" + minutes
-        time.medications = time.medications.map(med => {return props.medications.map(outerMed => {
-            if (med == outerMed.id) return outerMed.name})})
-        return {'time':timestring,'medications':time.medications}
+
+    doses.sort((a,b) => a.time > b.time ? 1 : -1)
+
+    doses = doses.map(dose => {
+        hours = dose.time.getHours() < 10 ? `0${dose.time.getHours()}` : `${dose.time.getHours()}`
+        minutes = dose.time.getMinutes() < 10 ? `0${dose.time.getMinutes()}` : `${dose.time.getMinutes()}`
+
+        dose.medications = dose.medications.map(med => {
+            return props.medications.map(outerMed => {
+                if (med == outerMed.id) return outerMed.name
+            })
+        })
+
+        return {'time':hours + ":" + minutes,'medications':dose.medications}
     })
-    console.log(times)
 
     const handleMedClick = (time) => {
         let newSelections
@@ -38,17 +41,15 @@ function CompartmentMenu(props) {
     }
 
     return (
-        <div id="compartment-menu" className="flex justify-stretch bg-white h-40 w-10/12">
+        <div id="compartment-menu" className="flex justify-evenly bg-white h-40 w-10/12">
             <div id="time-column" class="flex-column bg-gray-200 w-50 mx-10">
                 <h2>Doses</h2>
-                <ul>{times.length === 0 ? <li>No medication to be taken</li> : times.map(time => <li onClick={() => handleMedClick(time)}>{time.time}</li>)}</ul>
+                <ul>{doses.length === 0 ? <li>No medication to be taken</li> : doses.map(dose => <li onClick={() => handleMedClick(dose)}>{dose.time}</li>)}</ul>
             </div>
-            <div id="med-column" className="flex-column w-50 mx-10">
-            <h2>Medications</h2>
-            {selectedMedications.length === 0 ? null : 
-                                                            <ul>{times.map(time => time.medications.map(med => <li>{med}</li>))}</ul>
-                                                       }</div>
-            
+            <div id="med-column" className="flex-column bg-gray-200 w-50 mx-10">
+                <h2>Medications</h2>
+                <ul>{selectedMedications.length === 0 ? null : doses.map(time => time.medications.map(med => <li>{med}</li>))}</ul>
+            </div>     
         </div>
     )
 }
