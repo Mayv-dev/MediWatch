@@ -1,4 +1,3 @@
-// The form method should be switched to POST asap
 import {SERVER_HOST} from "../config/global_constants";
 import { useState } from "react"
 
@@ -10,7 +9,6 @@ function LoginPage(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        let userFound = false;
         fetch(`${SERVER_HOST}/user/login`, {
             method: "POST",
             mode: "cors",
