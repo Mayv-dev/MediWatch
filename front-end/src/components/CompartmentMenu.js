@@ -41,14 +41,14 @@ function CompartmentMenu(props) {
     }
 
     return (
-        <div id="compartment-menu" className="flex justify-evenly bg-white h-40 w-10/12">
-            <div id="time-column" class="flex-column bg-gray-200 w-50 mx-10">
+        <div id="compartment-menu" className="flex justify-center bg-white h-40 w-10/12">
+            <div id="time-column" class="flex-column w-1/4">
                 <h2>Doses</h2>
                 <ul>{doses.length === 0 ? <li>No medication to be taken</li> : doses.map(dose => <li onClick={() => handleMedClick(dose)}>{dose.time}</li>)}</ul>
             </div>
-            <div id="med-column" className="flex-column bg-gray-200 w-50 mx-10">
+            <div id="med-column" className="flex-column w-1/4">
                 <h2>Medications</h2>
-                <ul>{selectedMedications.length === 0 ? null : doses.map(time => time.medications.map(med => <li>{med}</li>))}</ul>
+                <ul>{selectedMedications.length === 0 ? null : doses.map(dose => dose.medications.map(medication => <li>{medication}</li>))}</ul>
             </div>     
         </div>
     )
