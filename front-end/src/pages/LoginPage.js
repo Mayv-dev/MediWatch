@@ -23,7 +23,7 @@ function LoginPage(props) {
             }
         })
         .then((response) => response.json())
-        .then(response => props.handleUserData(response.data))
+        .then(response => response.status == 200 ? props.handleUserData(response.data) : setInvalidCredentials(true))
         .catch((error) => {
             console.error('Error')
         })

@@ -1,27 +1,33 @@
 import { useState , useEffect } from "react"
 
 function CompartmentMenu(props) {
-    let doses = []
+    let chosenComparment = []
     let medications = []
     let date, hours, minutes
+
+    //props.pillbox.map(e =>console.log(e))
+    //console.log(props.medications)
+    //console.log(props.selectedCompartment)
 
     let [selectedMedications, setSelectedMedications] = useState([])
     useEffect(()=> {
         setSelectedMedications([])
     },[props.selectedCompartment])
 
-    props.schedule.map(scheduledDose => scheduledDose.compartment == props.selectedCompartment ? doses.push(scheduledDose) : null)
+    props.pillbox.map(compartmentInfo => compartmentInfo.id == props.selectedCompartment ? chosenComparment.push(compartmentInfo) : null)
 
-    doses = doses.map(dose => {
+    console.log(chosenComparment)
+
+    chosenComparment = chosenComparment.map(dose => {
         medications = []
         date = new Date(dose.datetime)
         if(dose.medications != undefined) dose.medications.map(medication => medications.push(medication))
         return {'time':date,'medications':medications}
     })
 
-    doses.sort((a,b) => a.time > b.time ? 1 : -1)
+    chosenComparment.sort((a,b) => a.time > b.time ? 1 : -1)
 
-    doses = doses.map(dose => {
+    chosenComparment = chosenComparment.map(dose => {
         hours = dose.time.getHours() < 10 ? `0${dose.time.getHours()}` : `${dose.time.getHours()}`
         minutes = dose.time.getMinutes() < 10 ? `0${dose.time.getMinutes()}` : `${dose.time.getMinutes()}`
 
@@ -41,14 +47,14 @@ function CompartmentMenu(props) {
     }
 
     return (
-        <div id="compartment-menu" className="flex justify-center bg-white h-40 w-10/12">
+        <div id="compartmentInfo-menu" className="flex justify-center bg-white h-40 w-10/12">
             <div id="time-column" class="flex-column w-1/4">
                 <h2>Doses</h2>
-                <ul>{doses.length === 0 ? <li>No medication to be taken</li> : doses.map(dose => <li onClick={() => handleMedClick(dose)}>{dose.time}</li>)}</ul>
+                <ul>{chosenComparment.length === 0 ? <li>No medication to be taken</li> : chosenComparment.map(dose => <li onClick={() => handleMedClick(dose)}>{dose.time}</li>)}</ul>
             </div>
             <div id="med-column" className="flex-column w-1/4">
                 <h2>Medications</h2>
-                <ul>{selectedMedications.length === 0 ? null : doses.map(dose => dose.medications.map(medication => <li>{medication}</li>))}</ul>
+                <ul>{selectedMedications.length === 0 ? null : chosenComparment.map(dose => dose.medications.map(medication => <li>{medication}</li>))}</ul>
             </div>     
         </div>
     )

@@ -9,7 +9,7 @@ function MedicationBox(props) {
     const schedule = props.userInfo.schedule
     const medications = props.userInfo.medications
 
-    const handleSelection = (chosenCompartment) => setChosenBox(pillbox.compartments.find(compartment => compartment.id == chosenCompartment).id)
+    const handleSelection = (chosenCompartment) => setChosenBox(pillbox.find(compartment => compartment.id == chosenCompartment).id)
     
     return (
         <div id="medication-box-container" className="w-10/12">
@@ -18,7 +18,7 @@ function MedicationBox(props) {
                     <BoxCompartment key={item.id} identifier={item.id} schedule={schedule} colour={chosenBox === item.id} onSelection={handleSelection}  />)
                 }
             </div>
-            {chosenBox.compartment !== null && <CompartmentMenu schedule={schedule} medications={medications} selectedCompartment={chosenBox} />}
+            {chosenBox.compartment !== null && <CompartmentMenu pillbox={pillbox} medications={medications} selectedCompartment={chosenBox} />}
         </div>
     )
 }
