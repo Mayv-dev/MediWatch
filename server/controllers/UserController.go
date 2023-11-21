@@ -19,6 +19,8 @@ import (
 var userCollection *mongo.Collection = configs.GetCollection(configs.DB, "Users")
 var validate = validator.New()
 
+const defaultNumberCompartments = 7
+
 func GetUser(c *gin.Context) {
 	id := c.Param("id")
 
@@ -94,10 +96,16 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
+	newPillbox := models.Pillbox{
+		Id:                 primitive.NewObjectID(),
+		NumberCompartments: defaultNumberCompartments,
+	}
+
 	newUser := models.User{
 		Id:       primitive.NewObjectID(),
 		Email:    user.Email,
 		Password: user.Password,
+		Pillbox:  newPillbox,
 	}
 
 	result, err := userCollection.InsertOne(ctx, newUser)
@@ -205,10 +213,16 @@ func RegisterUser(c *gin.Context) {
 		return
 	}
 
+	newPillbox := models.Pillbox{
+		Id:                 primitive.NewObjectID(),
+		NumberCompartments: defaultNumberCompartments,
+	}
+
 	newUser := models.User{
 		Id:       primitive.NewObjectID(),
 		Email:    user.Email,
 		Password: string(passwordHash),
+		Pillbox:  newPillbox,
 	}
 
 	err = userCollection.FindOne(ctx, bson.M{"email": newUser.Email}).Decode(&user)
@@ -268,6 +282,15 @@ func LoginUser(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, views.UserView{Status: http.StatusBadRequest, Message: "Error", Data: err.Error()})
 		return
+	}
+
+	loginUser = models.User{
+		Id:          user.Id,
+		Email:       user.Email,
+		Pillbox:     user.Pillbox,
+		Medications: user.Medications,
+		Schedule:    user.Schedule,
+		History:     user.History,
 	}
 
 	c.JSON(http.StatusOK, views.UserView{Status: http.StatusOK, Message: "Success", Data: loginUser})
