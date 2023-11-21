@@ -5,7 +5,7 @@ import CompartmentMenu from "./CompartmentMenu"
 function MedicationBox(props) {
     const [chosenBox, setChosenBox] = useState({compartment: null})
     
-    const pillbox = props.userInfo.pillbox
+    const pillbox = props.userInfo.schedule
     const schedule = props.userInfo.schedule
     const medications = props.userInfo.medications
 
@@ -14,7 +14,7 @@ function MedicationBox(props) {
     return (
         <div id="medication-box-container" className="w-10/12">
             <div id="medication-box" className="w-100">
-                {pillbox.compartments.map(item =>
+                {pillbox.map(item =>
                     <BoxCompartment key={item.id} identifier={item.id} schedule={schedule} colour={chosenBox === item.id} onSelection={handleSelection}  />)
                 }
             </div>

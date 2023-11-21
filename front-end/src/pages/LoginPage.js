@@ -11,17 +11,19 @@ function LoginPage(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
         let userFound = false;
-        fetch(`${SERVER_HOST}/users`, {
-            method: "GET",
+        fetch(`${SERVER_HOST}/user/login`, {
+            method: "POST",
             mode: "cors",
+            body: JSON.stringify({
+                email:inputs["email"],
+                password:inputs["password"]
+            }),
             headers: {
                 "Content-Type": "application/json"
             }
         })
         .then((response) => response.json())
-        .then((responseData) => responseData.data.map(user => user["email"] == inputs["email"] && 
-                                                              user["password"] == inputs["password"] ? 
-                                                              props.handleUserData(user) : setInvalidCredentials(true)))
+        .then(response => props.handleUserData(response.data))
         .catch((error) => {
             console.error('Error')
         })
