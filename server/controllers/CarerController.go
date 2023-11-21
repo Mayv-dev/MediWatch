@@ -12,6 +12,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var carerCollection *mongo.Collection = configs.GetCollection(configs.DB, "Carers")
@@ -176,4 +177,92 @@ func DeleteCarer(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, views.UserView{Status: http.StatusOK, Message: "Deleted", Data: "Carer deleted"})
+}
+
+func RegisterCarer(c *gin.Context) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	var carer models.Carer
+
+	if err := c.BindJSON(&carer); err != nil {
+		c.JSON(http.StatusBadRequest, views.UserView{Status: http.StatusBadRequest, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	if err := validate.Struct(&carer); err != nil {
+		c.JSON(http.StatusBadRequest, views.UserView{Status: http.StatusBadRequest, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	passwordHash, err := bcrypt.GenerateFromPassword([]byte(carer.Password), 8)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, views.UserView{Status: http.StatusBadRequest, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	newCaresFor := []models.CaresFor{}
+
+	newCarer := models.Carer{
+		Id:       primitive.NewObjectID(),
+		Email:    carer.Email,
+		Password: string(passwordHash),
+		CaresFor: newCaresFor,
+	}
+
+	err = carerCollection.FindOne(ctx, bson.M{"email": newCarer.Email}).Decode(&carer)
+
+	if err != nil && err != mongo.ErrNoDocuments {
+		c.JSON(http.StatusInternalServerError, views.UserView{Status: http.StatusInternalServerError, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	if err != mongo.ErrNoDocuments {
+		c.JSON(http.StatusBadRequest, views.UserView{Status: http.StatusBadRequest, Message: "User Alredy Exists", Data: "User Already Exists"})
+		return
+	}
+
+	result, err := carerCollection.InsertOne(ctx, newCarer)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, views.UserView{Status: http.StatusBadRequest, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusCreated, views.UserView{Status: http.StatusCreated, Message: "Success", Data: result})
+}
+
+func LoginCarer(c *gin.Context) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10&time.Second)
+	defer cancel()
+
+	var carer models.Carer
+
+	if err := c.BindJSON(&carer); err != nil {
+		c.JSON(http.StatusBadRequest, views.UserView{Status: http.StatusBadRequest, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	if err := validate.Struct(&carer); err != nil {
+		c.JSON(http.StatusBadRequest, views.UserView{Status: http.StatusBadRequest, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	loginCarer := models.Carer{
+		Email:    carer.Email,
+		Password: carer.Password,
+	}
+
+	err := carerCollection.FindOne(ctx, bson.M{"email": loginCarer.Email}).Decode(&carer)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, views.UserView{Status: http.StatusBadRequest, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	loginCarer = models.Carer{
+		Id:       carer.Id,
+		Email:    carer.Email,
+		CaresFor: carer.CaresFor,
+	}
+
+	c.JSON(http.StatusOK, views.UserView{Status: http.StatusOK, Message: "Success", Data: loginCarer})
 }
