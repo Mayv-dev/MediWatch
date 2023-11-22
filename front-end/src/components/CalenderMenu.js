@@ -9,8 +9,8 @@ function CalendarMenu(props) {
                     </tr>
                 </thead>
                 <tbody className="text-left">
-                    {props.doses.map((dose) => {
-                        const dateTime = new Date(dose.datetime);
+                    {props.schedule.map((sch) => {
+                        const dateTime = new Date(sch.datetime);
                         const hours = dateTime.getHours();
                         const minutes = dateTime.getMinutes();
 
@@ -19,7 +19,7 @@ function CalendarMenu(props) {
                         const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
 
                         return (
-                            <tr className="bg-gray-100 border-b border-gray-200" key={dose.id}>
+                            <tr className="bg-gray-100 border-b border-gray-200" key={sch.id}>
                                 <td className="px-4 py-2">{`${formattedHours}:${formattedMinutes}`}</td>
                                 <td className="px-4 py-2">N/A</td>
                             </tr>

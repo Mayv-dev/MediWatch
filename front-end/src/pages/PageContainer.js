@@ -6,24 +6,36 @@ import CalendarPage from "./CalendarPage";
 import SchedulePage from "./SchedulePage";
 
 function PageContainer() {
+    const [userId, setUserId] = useState()
     const [userData, setUserData] = useState()
+    const [userSchedule, setUserSchedule] = useState()
     const [currentPage, setCurrentPage] = useState()
+    const [LDMode, setLDMode] = useState("bg-commonBG-900")
 
     const handleUserData = (data) => {
+        setUserId(data.id)
         setUserData(data)
+        setUserSchedule(data.schedule)
         setCurrentPage("home")
+    }
+
+    const handleScheduleUpdate = (data) => {
+        console.log(data)
+        setUserSchedule(data)
     }
 
     const handlePageSwitch = (page) => userData != null ? setCurrentPage(page) : null
 
+    const handleLDSwitch = (e) => setLDMode(LDMode == "bg-commonBG-900" ? "bg-commonBG-100" : "bg-commonBG-900")
+
     return (
-        <>
-        <Navbar pageChange={handlePageSwitch}/>
-        {userData == null ? <LoginPage handleUserData={handleUserData}/> : null}
-        {currentPage == "home" && currentPage != "calendar" && currentPage != "schedule" ? <HomePage loggedInUser={userData}/> : null}
-        {currentPage == "calendar" && currentPage != "home" && currentPage != "schedule" ? <CalendarPage loggedInUser={userData}/> : null}
-        {currentPage == "schedule" && currentPage != "home" && currentPage != "calendar" ? <SchedulePage loggedInUser={userData}/> : null}
-        </>
+        <div className={LDMode}>
+            <Navbar LDModeSwitch={handleLDSwitch} pageChange={handlePageSwitch}/>
+            {userData == null ? <LoginPage handleUserData={handleUserData}/> : null}
+            {currentPage == "home" && currentPage != "calendar" && currentPage != "schedule" ? <HomePage loggedInUser={userData} schedule={userSchedule}/> : null}
+            {currentPage == "calendar" && currentPage != "home" && currentPage != "schedule" ? <CalendarPage loggedInUser={userData} schedule={userSchedule}/> : null}
+            {currentPage == "schedule" && currentPage != "home" && currentPage != "calendar" ? <SchedulePage loggedInUser={userData} schedule={userSchedule} updateSchedule={handleScheduleUpdate}/> : null}
+        </div>
     )
 }
 

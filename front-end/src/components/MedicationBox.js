@@ -5,8 +5,8 @@ import CompartmentMenu from "./CompartmentMenu"
 function MedicationBox(props) {
     const [chosenBox, setChosenBox] = useState({compartment: null})
 
-    const pillbox = props.userInfo.schedule
-    const schedule = props.userInfo.schedule
+    const pillbox = props.schedule
+    const schedule = props.schedule
     const medications = props.userInfo.medications
 
     const handleSelection = (chosenCompartment) => setChosenBox(pillbox.find(compartment => compartment.id == chosenCompartment).id)

@@ -81,7 +81,7 @@ function LoginPage(props) {
 
     //The icon to reveal/hide password could be improved by us, as the option disappears entirely after clicking away
     return (
-        <form className="w-screen bg-commonBG-900 h-screen flex flex-col align-center justify-center items-center" onSubmit={handleSubmit}>
+        <form className="w-screen h-screen flex flex-col align-center justify-center items-center" onSubmit={handleSubmit}>
 
             <h1 class="text-5xl text-commonTitle-900 my-4">MediWatch</h1>
             

@@ -3,9 +3,9 @@ import ScheduleMenu from "../components/ScheduleMenu"
 function SchedulePage(props) {
         return (
             <>
-            <div class="flex items-center text-center bg-commonBG-100 h-screen w-screen">
-                <ScheduleList schedule={props.loggedInUser.schedule}/>
-                <ScheduleMenu meds={props.loggedInUser.medications} userID={props.loggedInUser.id}/>
+            <div class="flex items-center text-center h-screen w-screen">
+                <ScheduleList schedule={props.schedule}/>
+                <ScheduleMenu meds={props.loggedInUser.medications} userID={props.loggedInUser.id} updateSchedule={props.updateSchedule}/>
             </div>
             </>
         )

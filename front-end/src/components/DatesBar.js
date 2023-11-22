@@ -87,7 +87,7 @@ function DatesBar(props) {
         console.log(dayNum, month, selected);
         setSelectedDate({ dayNum, month });
         setselectedDateDoses([])
-        props.userInfo.schedule.forEach(element => {
+        props.schedule.forEach(element => {
             const date = new Date(element.datetime);
             if (date.getDate() === parseInt(dayNum) && date.getMonth() + 1 === parseInt(month)) {
                 setselectedDateDoses((prevState) => [...prevState, element]);
@@ -101,7 +101,7 @@ function DatesBar(props) {
 
     return (
         <div className="flex flex-col items-center justify-center space-y-2">
-            {props.userInfo.schedule == undefined ? <h1>No schedule has been set</h1> :
+            {props.schedule == undefined ? <h1>No schedule has been set</h1> :
             <div className="flex items-center space-x-2">
                 <button
                     className="bg-slate-500 rounded-sm p-1"
@@ -146,7 +146,7 @@ function DatesBar(props) {
             </div>
         }
 
-            {selectedDate !== null && props.userInfo.schedule != undefined && <CalendarMenu doses={selectedDateDoses} />}
+            {selectedDate !== null && props.schedule != undefined && <CalendarMenu schedule={selectedDateDoses} />}
         </div>
 
 

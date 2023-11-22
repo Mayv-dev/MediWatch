@@ -10,12 +10,10 @@ function ScheduleMenu(props) {
     let [newTime,setNewTime] = useState()
     let [newCompartment,setNewCompartment] = useState()
 
-    let [newDateTime,setNewDateTime] = useState()
-
     let [missingValues,setMissingValues] = useState(["bg-white","bg-white","bg-white","bg-white"])
 
     const handleNewDose = (value) => {
-        let hours,minutes,x,medIDs,e;
+        let hours,minutes,dateTime,medIDs,e;
         try {
             if(newCompartment == null) throw console.error();
             e = Date.parse(newDate)
@@ -25,10 +23,7 @@ function ScheduleMenu(props) {
             minutes = newTime.substring(3)
             minutes = parseInt(minutes) * 60000
             e = e+hours+minutes
-            x = new Date(e).toISOString()
-            setNewDateTime(x.toString())
-            console.log(newDateTime)
-            console.log(newCompartment)
+            dateTime = new Date(e).toISOString()
             if(newMedications.length == 0) throw console.error();
             medIDs = newMedications.map(newMed => newMed.id)
             console.log(medIDs)
@@ -49,7 +44,7 @@ function ScheduleMenu(props) {
             method: "PUT",
             mode: "cors",
             body: JSON.stringify({
-                datetime:newDateTime,
+                datetime:dateTime.toString(),
                 compartment:parseInt(newCompartment),
                 medications:medIDs
             }),
@@ -58,7 +53,20 @@ function ScheduleMenu(props) {
             }
         })
         .then((response) => response.json())
-        .then(response => response.status == 200 ? props.handleUserData(response.data) : console.log("something happened"))
+        .then(response => response.status == 200 ? props.updateSchedule(response.data) : console.log("something happened"))
+        .catch((error) => {
+            console.error('Error')
+        })
+
+        fetch(`${SERVER_HOST}/user/${props.userID}/schedule`, {
+            method: "GET",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .then((response) => response.json())
+        .then(response => props.updateSchedule(response.data))
         .catch((error) => {
             console.error('Error')
         })
