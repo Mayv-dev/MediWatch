@@ -101,6 +101,7 @@ function DatesBar(props) {
 
     return (
         <div className="flex flex-col items-center justify-center space-y-2">
+            {props.userInfo.schedule == undefined ? <h1>No schedule has been set</h1> :
             <div className="flex items-center space-x-2">
                 <button
                     className="bg-slate-500 rounded-sm p-1"
@@ -143,7 +144,9 @@ function DatesBar(props) {
                     Next Date
                 </button>
             </div>
-            {selectedDate !== null && <CalendarMenu doses={selectedDateDoses} />}
+        }
+
+            {selectedDate !== null && props.userInfo.schedule != undefined && <CalendarMenu doses={selectedDateDoses} />}
         </div>
 
 
