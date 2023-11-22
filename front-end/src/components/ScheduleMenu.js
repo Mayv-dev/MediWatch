@@ -4,12 +4,15 @@ import {SERVER_HOST} from "../config/global_constants";
 function ScheduleMenu(props) { 
     let [inputError,setInputError] = useState(false)
 
-    let [newDateTime,setNewDateTime] = useState()
+    
+    let [newMedications,setNewMedications] = useState([])
     let [newDate,setNewDate] = useState()
     let [newTime,setNewTime] = useState()
     let [newCompartment,setNewCompartment] = useState()
-    let [newMedications,setNewMedications] = useState([])
-    let userPrescriptions = props.meds.map(med => {return {"id":med.id,"dose":med.dose}})
+
+    let [newDateTime,setNewDateTime] = useState()
+
+    let [missingValues,setMissingValues] = useState(["bg-white","bg-white","bg-white","bg-white"])
 
 
     const handleNewDose = (value) => {
@@ -33,6 +36,12 @@ function ScheduleMenu(props) {
             }
         catch(e) {
             setInputError(true)
+            let missingCheck = [false, false, false, false]
+            missingCheck[0] = newMedications.length == 0 ? "bg-red-200" : "bg-white"
+            missingCheck[1] = newDate == null || newDate == "" ? "bg-red-200" : "bg-white"
+            missingCheck[2] = newTime == null || newTime == "" ? "bg-red-200" : "bg-white"
+            missingCheck[3] = newCompartment == null || newCompartment == "" ? "bg-red-200" : "bg-white"
+            setMissingValues(missingCheck)
             return
         }
         setInputError(false)
@@ -77,16 +86,16 @@ function ScheduleMenu(props) {
                 {newMedications.length == 0 ? <li>No medications to display</li> :
                 newMedications.map(med => <li onClick={e => handleMedDelete(med)} className="border-2 border-black rounded-md bg-white hover:bg-red-400 mx-0.5 my-2  p-0.5">{med.name}</li>)}
             </ul>
-            <select className="border-2 border-black rounded-md w-4/6 m-auto" name="Medication" onChange={e => handleMedSelect(e.target.value)}>
+            <select className={"border-2 border-black rounded-md w-4/6 m-auto "+missingValues[0]} name="Medication" onChange={e => handleMedSelect(e.target.value)}>
                 {props.meds.map(med => <option value={med.id + "||" + med.name}>{med.name}</option>)}
             </select>
             
             <label className="mt-3" for="Date">Date: </label>
-            <input className="border-2 border-black rounded-md w-4/6 m-auto" value={newDate} onChange={e => setNewDate(e.target.value)}type="date" name="Date"></input>
+            <input className={"border-2 border-black rounded-md w-4/6 m-auto "+missingValues[1]} value={newDate} onChange={e => setNewDate(e.target.value)}type="date" name="Date"></input>
             <label className="mt-3" for="Time">Time: </label>
-            <input className="border-2 border-black rounded-md w-4/6 m-auto" value={newTime} onChange={e => setNewTime(e.target.value)}type="time" name="Time"></input>
+            <input className={"border-2 border-black rounded-md w-4/6 m-auto "+missingValues[2]}  value={newTime} onChange={e => setNewTime(e.target.value)}type="time" name="Time"></input>
             <label className="mt-3" for="Compartment">Compartment: </label>
-            <input className="border-2 border-black rounded-md w-4/6 m-auto" type="number" min="1" max="7" value={newCompartment} onChange={e => setNewCompartment(e.target.value)}name="Compartment"></input>
+            <input className={"border-2 border-black rounded-md w-4/6 m-auto "+missingValues[3]} type="number" min="1" max="7" value={newCompartment} onChange={e => setNewCompartment(e.target.value)}name="Compartment"></input>
             {inputError ? <div className="mt-3 rounded bg-rose-600 p-2 text-white"><p>Error: Please fill in all fields</p></div>:null}
             <button onClick={e => handleNewDose("test")}className="mt-3 w-1/4 my-auto text-center rounded-full bg-blue-400 hover:bg-blue-500 active:bg-blue-700 px-3 py-1">Add a dose</button>
         </div>
