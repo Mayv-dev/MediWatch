@@ -15,6 +15,7 @@ function ScheduleMenu(props) {
     const handleNewDose = (value) => {
         let hours,minutes,x,medIDs,e;
         try {
+            if(newCompartment == null) throw console.error();
             e = Date.parse(newDate)
             console.log(e)
             hours = newTime.substring(0,2)
