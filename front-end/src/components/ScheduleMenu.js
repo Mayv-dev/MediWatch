@@ -19,11 +19,11 @@ function ScheduleMenu(props) {
         minutes = parseInt(minutes) * 60000
         e = e+hours+minutes
         let x = new Date(e).toISOString()
-        console.log(x)
         setNewDateTime(x.toString())
         console.log(newDateTime)
         console.log(newCompartment)
-        console.log(newMedications)
+        let medIDs = newMedications.map(newMed => newMed.id)
+        console.log(medIDs)
 
         fetch(`${SERVER_HOST}/user/${props.userID}/schedule`, {
             method: "PUT",
@@ -31,7 +31,7 @@ function ScheduleMenu(props) {
             body: JSON.stringify({
                 datetime:newDateTime,
                 compartment:parseInt(newCompartment),
-                medications:newMedications
+                medications:medIDs
             }),
             headers: {
                 "Content-Type": "application/json"
