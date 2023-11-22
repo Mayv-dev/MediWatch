@@ -79,25 +79,27 @@ function ScheduleMenu(props) {
 
     return (
         <>
-        <div className="flex flex-col items-center w-1/2">
-            <h2>Add Dose</h2>
-            <label className="mt-3" for="Medication">Medication: </label>
-            <ul className="flex flex-row justify-center w-full">
-                {newMedications.length == 0 ? <li>No medications to display</li> :
-                newMedications.map(med => <li onClick={e => handleMedDelete(med)} className="border-2 border-black rounded-md bg-white hover:bg-red-400 mx-0.5 my-2  p-0.5">{med.name}</li>)}
-            </ul>
-            <select className={"border-2 border-black rounded-md w-4/6 m-auto "+missingValues[0]} name="Medication" onChange={e => handleMedSelect(e.target.value)}>
-                {props.meds.map(med => <option value={med.id + "||" + med.name}>{med.name}</option>)}
-            </select>
-            
-            <label className="mt-3" for="Date">Date: </label>
-            <input className={"border-2 border-black rounded-md w-4/6 m-auto "+missingValues[1]} value={newDate} onChange={e => setNewDate(e.target.value)}type="date" name="Date"></input>
-            <label className="mt-3" for="Time">Time: </label>
-            <input className={"border-2 border-black rounded-md w-4/6 m-auto "+missingValues[2]}  value={newTime} onChange={e => setNewTime(e.target.value)}type="time" name="Time"></input>
-            <label className="mt-3" for="Compartment">Compartment: </label>
-            <input className={"border-2 border-black rounded-md w-4/6 m-auto "+missingValues[3]} type="number" min="1" max="7" value={newCompartment} onChange={e => setNewCompartment(e.target.value)}name="Compartment"></input>
-            {inputError ? <div className="mt-3 rounded bg-rose-600 p-2 text-white"><p>Error: Please fill in all fields</p></div>:null}
-            <button onClick={e => handleNewDose("test")}className="mt-3 w-1/4 my-auto text-center rounded-full bg-blue-400 hover:bg-blue-500 active:bg-blue-700 px-3 py-1">Add a dose</button>
+        <div className="flex flex-col items-center m-auto w-1/2 h-3/4">
+            <div className="flex flex-col items-center border-t-2 h-full border-2 w-3/5 m-auto rounded-md border-gray-300 bg-white">
+                <h2 className="border-b-2 rounded-tr rounded-tl w-full border-gray-300 bg-gray-200 mb-5">Add Dose</h2>
+                <label className="mt-3" for="Medication">Medication: </label>
+                <ul className="flex flex-row justify-center w-full">
+                    {newMedications.length == 0 ? <li>No medications to display</li> :
+                    newMedications.map(med => <li onClick={e => handleMedDelete(med)} className="border-2 border-black rounded-md bg-white hover:bg-red-400 mx-0.5 my-2  p-0.5">{med.name}</li>)}
+                </ul>
+                <select className={"flex flex-col border-2 border-gray-300 rounded-md w-4/6 mx-auto "+missingValues[0]} name="Medication" onChange={e => handleMedSelect(e.target.value)}>
+                    {props.meds.map(med => <option value={med.id + "||" + med.name}>{med.name}</option>)}
+                </select>
+                
+                <label className="mt-3" for="Date">Date: </label>
+                <input className={"border-2 border-gray-300 rounded-md w-4/6 mx-auto "+missingValues[1]} value={newDate} onChange={e => setNewDate(e.target.value)}type="date" name="Date"></input>
+                <label className="mt-3" for="Time">Time: </label>
+                <input className={"border-2 border-gray-300 rounded-md w-4/6 mx-auto "+missingValues[2]}  value={newTime} onChange={e => setNewTime(e.target.value)}type="time" name="Time"></input>
+                <label className="mt-3" for="Compartment">Compartment: </label>
+                <input className={"border-2 border-gray-300 rounded-md w-4/6 mx-auto "+missingValues[3]} type="number" min="1" max="7" value={newCompartment} onChange={e => setNewCompartment(e.target.value)}name="Compartment"></input>
+                {inputError ? <div className="mt-3 rounded bg-rose-600 p-2 text-white"><p>Error: Please fill in all fields</p></div>:null}
+                <button onClick={e => handleNewDose("test")}className="mt-3 w-3/4 my-auto text-center rounded-full bg-blue-400 border-2 border-gray-300 hover:bg-blue-500 active:bg-blue-700 px-3 py-1">Add a dose</button>
+            </div>
         </div>
         </>
     )
