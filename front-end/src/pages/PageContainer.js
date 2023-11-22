@@ -21,7 +21,7 @@ function PageContainer() {
         <Navbar pageChange={handlePageSwitch}/>
         {userData == null ? <LoginPage handleUserData={handleUserData}/> : null}
         {currentPage == "home" && currentPage != "calendar" && currentPage != "schedule" ? <HomePage loggedInUser={userData}/> : null}
-        {currentPage == "calendar" && currentPage != "home" && currentPage != "schedule" ? <CalendarPage /> : null}
+        {currentPage == "calendar" && currentPage != "home" && currentPage != "schedule" ? <CalendarPage loggedInUser={userData}/> : null}
         {currentPage == "schedule" && currentPage != "home" && currentPage != "calendar" ? <SchedulePage loggedInUser={userData}/> : null}
         </>
     )
