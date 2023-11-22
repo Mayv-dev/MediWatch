@@ -55,18 +55,24 @@ function ScheduleMenu(props) {
     }
     return (
         <>
-        <div className="w-1/2">
-            <h2>Schedule</h2>
-            <ul>
-                {newMedications.map(med => <li>{med.name}</li>)}
+        <div className="flex flex-col items-center w-1/2">
+            <h2>Add Dose</h2>
+            <label className="mt-3" for="Medication">Medication: </label>
+            <ul className="flex flex-row justify-center w-full">
+                {newMedications.length == 0 ? <li>No medications to display</li> :
+                newMedications.map(med => <li className="border-2 border-black rounded-md bg-white hover:bg-red-400 mx-0.5 my-2  p-0.5">{med.name}</li>)}
             </ul>
-            <select onChange={e => handleMedSelect(e.target.value)}>
+            <select className="border-2 border-black rounded-md w-4/6 m-auto" name="Medication" onChange={e => handleMedSelect(e.target.value)}>
                 {props.meds.map(med => <option value={med.id + "||" + med.name}>{med.name}</option>)}
             </select>
-            <input value={newDate} onChange={e => setNewDate(e.target.value)}type="date" name="Date"></input>
-            <input value={newTime} onChange={e => setNewTime(e.target.value)}type="time" name="Time"></input>
-            <input type="number" min="1" max="7" value={newCompartment} onChange={e => setNewCompartment(e.target.value)}name="Compartment"></input>
-            <button onClick={e => handleNewDose("test")}className="rounded-full bg-red-500 hover:bg-red-700 active:bg-red-900 px-3 py-1">Add a dose</button>
+            
+            <label className="mt-3" for="Date">Date: </label>
+            <input className="border-2 border-black rounded-md w-4/6 m-auto" value={newDate} onChange={e => setNewDate(e.target.value)}type="date" name="Date"></input>
+            <label className="mt-3" for="Time">Time: </label>
+            <input className="border-2 border-black rounded-md w-4/6 m-auto" value={newTime} onChange={e => setNewTime(e.target.value)}type="time" name="Time"></input>
+            <label className="mt-3" for="Compartment">Compartment: </label>
+            <input className="border-2 border-black rounded-md w-4/6 m-auto" type="number" min="1" max="7" value={newCompartment} onChange={e => setNewCompartment(e.target.value)}name="Compartment"></input>
+            <button onClick={e => handleNewDose("test")}className="mt-3 w-1/4 my-auto text-center rounded-full bg-blue-400 hover:bg-blue-500 active:bg-blue-700 px-3 py-1">Add a dose</button>
         </div>
         </>
     )
