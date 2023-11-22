@@ -47,12 +47,15 @@ function ScheduleMenu(props) {
     const handleMedSelect = (med) => {
         console.log(med)
         let medicationID = (med.substring(0,med.indexOf("||")))
+        if (newMedications.find(newMed => newMed.id == medicationID)) return
         let medicationName = (med.substring(med.indexOf("||")+2))
-        let sizeCheck = newMedications.filter(newMed => newMed.id == medicationID)
         let array = newMedications.map(newMed => newMed)
         array.push({"id":medicationID,"name":medicationName})
-        sizeCheck.length != 0 ? setNewMedications(newMedications.filter(newMed => newMed.id != medicationID)) : setNewMedications(array)
+        setNewMedications(array)
     }
+
+    const handleMedDelete = (med) => setNewMedications(newMedications.filter(newMed => newMed.id != med.id))
+
     return (
         <>
         <div className="flex flex-col items-center w-1/2">
@@ -60,7 +63,7 @@ function ScheduleMenu(props) {
             <label className="mt-3" for="Medication">Medication: </label>
             <ul className="flex flex-row justify-center w-full">
                 {newMedications.length == 0 ? <li>No medications to display</li> :
-                newMedications.map(med => <li className="border-2 border-black rounded-md bg-white hover:bg-red-400 mx-0.5 my-2  p-0.5">{med.name}</li>)}
+                newMedications.map(med => <li onClick={e => handleMedDelete(med)} className="border-2 border-black rounded-md bg-white hover:bg-red-400 mx-0.5 my-2  p-0.5">{med.name}</li>)}
             </ul>
             <select className="border-2 border-black rounded-md w-4/6 m-auto" name="Medication" onChange={e => handleMedSelect(e.target.value)}>
                 {props.meds.map(med => <option value={med.id + "||" + med.name}>{med.name}</option>)}
