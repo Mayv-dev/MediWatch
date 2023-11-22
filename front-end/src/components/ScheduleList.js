@@ -24,10 +24,13 @@ function ScheduleList(props) {
     return (
         <>
         <div className="w-1/2">
-            <h2>Schedule</h2>
-            <ul>
-                {list.map(listItem => <li>{listItem}</li>)}
-            </ul>
+            <div className="border-2 border-black rounded-md w-1/2 m-auto bg-white">
+                <h2 className="border-b-2 rounded-tl-md rounded-tr-md border-black bg-gray-200">Schedule</h2>
+                <ul>
+                    
+                    {list.map(listItem => <li>{listItem}</li>)}
+                </ul>
+            </div>
         </div>
         </>
     )
