@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 import {SERVER_HOST} from "../config/global_constants";
 
 function ScheduleMenu(props) { 
+    let [inputError,setInputError] = useState(false)
+
     let [newDateTime,setNewDateTime] = useState()
     let [newDate,setNewDate] = useState()
     let [newTime,setNewTime] = useState()
@@ -11,19 +13,27 @@ function ScheduleMenu(props) {
 
 
     const handleNewDose = (value) => {
-        let e = Date.parse(newDate)
-        console.log(e)
-        let hours = newTime.substring(0,2)
-        hours = parseInt(hours) * 3600000
-        let minutes = newTime.substring(3)
-        minutes = parseInt(minutes) * 60000
-        e = e+hours+minutes
-        let x = new Date(e).toISOString()
-        setNewDateTime(x.toString())
-        console.log(newDateTime)
-        console.log(newCompartment)
-        let medIDs = newMedications.map(newMed => newMed.id)
-        console.log(medIDs)
+        let hours,minutes,x,medIDs,e;
+        try {
+            e = Date.parse(newDate)
+            console.log(e)
+            hours = newTime.substring(0,2)
+            hours = parseInt(hours) * 3600000
+            minutes = newTime.substring(3)
+            minutes = parseInt(minutes) * 60000
+            e = e+hours+minutes
+            x = new Date(e).toISOString()
+            setNewDateTime(x.toString())
+            console.log(newDateTime)
+            console.log(newCompartment)
+            medIDs = newMedications.map(newMed => newMed.id)
+            console.log(medIDs)
+            }
+        catch(e) {
+            setInputError(true)
+            return
+        }
+        setInputError(false)
 
         fetch(`${SERVER_HOST}/user/${props.userID}/schedule`, {
             method: "PUT",
@@ -75,6 +85,7 @@ function ScheduleMenu(props) {
             <input className="border-2 border-black rounded-md w-4/6 m-auto" value={newTime} onChange={e => setNewTime(e.target.value)}type="time" name="Time"></input>
             <label className="mt-3" for="Compartment">Compartment: </label>
             <input className="border-2 border-black rounded-md w-4/6 m-auto" type="number" min="1" max="7" value={newCompartment} onChange={e => setNewCompartment(e.target.value)}name="Compartment"></input>
+            {inputError ? <div className="mt-3 rounded bg-rose-600 p-2 text-white"><p>Error: Please fill in all fields</p></div>:null}
             <button onClick={e => handleNewDose("test")}className="mt-3 w-1/4 my-auto text-center rounded-full bg-blue-400 hover:bg-blue-500 active:bg-blue-700 px-3 py-1">Add a dose</button>
         </div>
         </>
