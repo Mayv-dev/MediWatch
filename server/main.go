@@ -2,11 +2,15 @@ package main
 
 import (
 	"mediwatch/server/configs"
+	"mediwatch/server/pn"
 	"mediwatch/server/routes"
+	"sync"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
+
+var wg = &sync.WaitGroup{}
 
 func main() {
 	router := gin.Default()
@@ -24,5 +28,12 @@ func main() {
 	routes.UserScheduleRouter(router)
 	routes.UserMedicationRouter(router)
 
+	pbnb := configs.ConnectPubnub()
+
+	wg.Add(1)
+	go pn.Listen(pbnb, wg)
+
 	router.Run("localhost:4000")
+
+	wg.Wait()
 }

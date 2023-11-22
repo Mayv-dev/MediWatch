@@ -36,3 +36,13 @@ func GetSubscribeKey() string {
 
 	return os.Getenv(("PUBNUB_SUB_KEY"))
 }
+
+func GetChannel() string {
+	err := godotenv.Load()
+
+	if err != nil {
+		log.Fatal("Error loading .env file.")
+	}
+
+	return os.Getenv(("PUBNUB_CHANNEL"))
+}
