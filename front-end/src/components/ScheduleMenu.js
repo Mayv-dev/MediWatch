@@ -27,6 +27,7 @@ function ScheduleMenu(props) {
             setNewDateTime(x.toString())
             console.log(newDateTime)
             console.log(newCompartment)
+            if(newMedications.length == 0) throw console.error();
             medIDs = newMedications.map(newMed => newMed.id)
             console.log(medIDs)
             }
