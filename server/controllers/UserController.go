@@ -302,3 +302,74 @@ func LoginUser(c *gin.Context) {
 
 	c.JSON(http.StatusOK, views.UserView{Status: http.StatusOK, Message: "Success", Data: loginUser})
 }
+
+func GoogleLoginUser(c *gin.Context) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	var user models.User
+
+	if err := c.BindJSON(&user); err != nil {
+		c.JSON(http.StatusBadRequest, views.UserView{Status: http.StatusBadRequest, Message: "Error", Data: err.Error()})
+		return
+	}
+
+	if validationErr := validate.Struct(&user); validationErr != nil {
+		c.JSON(http.StatusBadRequest, views.UserView{Status: http.StatusBadRequest, Message: "Error", Data: validationErr.Error()})
+		return
+	}
+
+	loginUser := models.User{
+		Email: user.Email,
+	}
+
+	err := userCollection.FindOne(ctx, bson.M{"email": loginUser.Email}).Decode(&user)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+
+			newPillbox := models.Pillbox{
+				Id:                 primitive.NewObjectID(),
+				NumberCompartments: defaultNumberCompartments,
+			}
+
+			newMedications := []models.Medication{}
+			newSchedule := []models.Schedule{}
+			newHistory := []models.History{}
+
+			newUser := models.User{
+				Id:          primitive.NewObjectID(),
+				Email:       user.Email,
+				Pillbox:     newPillbox,
+				Medications: newMedications,
+				Schedule:    newSchedule,
+				History:     newHistory,
+			}
+
+			result, err := userCollection.InsertOne(ctx, newUser)
+			if err != nil {
+				c.JSON(http.StatusInternalServerError, views.UserView{Status: http.StatusInternalServerError, Message: "Error", Data: err.Error()})
+				return
+			}
+
+			err = userCollection.FindOne(ctx, bson.M{"_id": result.InsertedID}).Decode(&user)
+			if err != nil {
+				c.JSON(http.StatusInternalServerError, views.UserView{Status: http.StatusInternalServerError, Message: "Error", Data: err.Error()})
+				return
+			}
+		} else {
+			c.JSON(http.StatusInternalServerError, views.UserView{Status: http.StatusInternalServerError, Message: "Error", Data: err.Error()})
+			return
+		}
+	}
+
+	loginUser = models.User{
+		Id:          user.Id,
+		Email:       user.Email,
+		Pillbox:     user.Pillbox,
+		Medications: user.Medications,
+		Schedule:    user.Schedule,
+		History:     user.History,
+	}
+
+	c.JSON(http.StatusOK, views.UserView{Status: http.StatusOK, Message: "Success", Data: loginUser})
+}
