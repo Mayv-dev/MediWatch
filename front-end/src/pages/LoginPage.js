@@ -47,7 +47,21 @@ function LoginPage(props) {
       // console.log(accessToken);
     
       const onSuccess = response => {
-        console.log('SUCCESS', response);
+        fetch(`${SERVER_HOST}/user/googlelogin`, {
+          method: "POST",
+          mode: "cors",
+          body: JSON.stringify({
+              email:response.profileObj.email
+          }),
+          headers: {
+              "Content-Type": "application/json"
+          }
+      })
+      .then((response) => response.json())
+      .then(response => response.status == 200 ? props.handleUserData(response.data) : setInvalidCredentials(true))
+      .catch((error) => {
+          console.error('Error')
+      })
       };
       const onFailure = response => {
         console.log('FAILED', response);
