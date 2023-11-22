@@ -1,7 +1,10 @@
-import {SERVER_HOST} from "../config/global_constants";
-import { useState } from "react"
+import {SERVER_HOST, REACT_PUBLIC_GOOGLE_CLIENT_ID} from "../config/global_constants";
+import { GoogleLogin } from 'react-google-login';
+import { useState, useEffect } from "react"
+import { gapi } from 'gapi-script';
 
 // Form code was made with help from https://www.w3schools.com/react/react_forms.asp
+// GoogleLogin and gapi code was taken from https://stackoverflow.com/questions/72172877/having-a-trouble-with-google-oauth2-app-has-no-backend-so-client-side-only
 
 function LoginPage(props) {
     const [inputs, setInputs] = useState({}) 
@@ -27,6 +30,37 @@ function LoginPage(props) {
         })
     }
 
+    useEffect(() => {
+        function start() {
+          gapi.client.init({
+            clientId: REACT_PUBLIC_GOOGLE_CLIENT_ID,
+            scope: 'email',
+          });
+        }
+    
+        gapi.load('client:auth2', start);
+      }, []);
+    
+    
+      // **you can access the token like this**
+      // const accessToken = gapi.auth.getToken().access_token;
+      // console.log(accessToken);
+    
+      const onSuccess = response => {
+        console.log('SUCCESS', response);
+      };
+      const onFailure = response => {
+        console.log('FAILED', response);
+      };
+
+    function onSignIn(googleUser) {
+        var profile = googleUser.getBasicProfile();
+        console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+        console.log('Name: ' + profile.getName());
+        console.log('Image URL: ' + profile.getImageUrl());
+        console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+      }
+
     const handleChange = (e) => {
         setInputs(values => ({...values, [e.target.name]: e.target.value}))
     }
@@ -51,9 +85,19 @@ function LoginPage(props) {
                 onChange={handleChange}
             />
 
+<div>
+      <GoogleLogin
+        clientId={REACT_PUBLIC_GOOGLE_CLIENT_ID}
+        onSuccess={onSuccess}
+        onFailure={onFailure}
+      />
+    </div>
+
             {invalidCredentials ? <div className="bg-rose-600 p-2 text-white"><p>The supplied user information is invalid, please try again</p></div>:null}
             
             <input className="my-3 border-2 border-black p-2 rounded-lg bg-blue-300" type="submit" value="Enter App"/>
+            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+            
 
         </form>
     )

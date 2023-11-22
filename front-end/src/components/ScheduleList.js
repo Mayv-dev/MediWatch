@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 
 function ScheduleList(props) { 
     const monthStrings = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
-    let seconds, hours, day, month;
+    let minutes, hours, day, month;
     let dateConversion = props.schedule.map(item => new Date(item.datetime))
     dateConversion = dateConversion.map(date => {
         if (date.getDate() % 10 != 1) {
@@ -14,10 +14,10 @@ function ScheduleList(props) {
         }
         else day = date.getDate() + "st"
         date.getHours() / 10 < 1 ? hours = "0" + date.getHours() : hours = date.getHours()
-        date.getSeconds() / 10 < 1 ? seconds = "0" + date.getSeconds() : seconds = date.getSeconds()
+        date.getMinutes() / 10 < 1 ? minutes = "0" + date.getMinutes() : minutes = date.getMinutes()
         month = monthStrings[date.getMonth()]
 
-        return day + " " + month + " " + date.getFullYear() + " - " + hours + ":" + seconds
+        return day + " " + month + " " + date.getFullYear() + " - " + hours + ":" + minutes
     })
 
     let [list,setList] = useState(dateConversion)
