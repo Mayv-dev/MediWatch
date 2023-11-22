@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import CalendarMenu from "./CalenderMenu";
 
 const DAYSOFWEEK = {
     "1": "Monday",
@@ -10,17 +11,18 @@ const DAYSOFWEEK = {
     "0": "Sunday",
 };
 
-
-function DatesBar() {
+function DatesBar(props) {
     const [currentDate, setCurrentDate] = useState({});
     const [dates, setDates] = useState([]);
+    const [selectedDate, setSelectedDate] = useState(null);
+    const [selectedDateDoses, setselectedDateDoses] = useState([]);
 
     function setUpCurrent() {
         let cDate = new Date();
 
         let day = cDate.getDay();
         let date = cDate.getDate();
-        let month = cDate.getMonth(); 
+        let month = cDate.getMonth();
 
         if (Object.keys(currentDate).length === 0) {
             setCurrentDate({
@@ -43,7 +45,7 @@ function DatesBar() {
 
                 setDates((prevState) => [
                     ...prevState,
-                    { Day: DAYSOFWEEK[day], DayNum: date, Month: month + 1 }, 
+                    { Day: DAYSOFWEEK[day], DayNum: date, Month: month + 1 },
                 ]);
             }
 
@@ -56,7 +58,7 @@ function DatesBar() {
                 let month = cDate.getMonth();
 
                 setDates((prevState) => [
-                    { Day: DAYSOFWEEK[day], DayNum: date, Month: month + 1 }, 
+                    { Day: DAYSOFWEEK[day], DayNum: date, Month: month + 1 },
                     ...prevState,
                 ]);
             }
@@ -73,43 +75,58 @@ function DatesBar() {
     }, []);
 
     const prevDate = () => {
-;
+        
     };
 
     const nextDate = () => {
 
     };
 
+    const handleMenu = (e) => {
+        const [dayNum, month] = e.currentTarget.id.split(' ');
+        setSelectedDate({ dayNum, month });
+        setselectedDateDoses([])
+        props.userInfo.schedule.forEach(element => {
+            const date = new Date(element.datetime);
+            if (date.getDate() === parseInt(dayNum) && date.getMonth() + 1 === parseInt(month)) {
+                setselectedDateDoses((prevState) => [...prevState, element]);
+            }
+        }); 
+    }
+
     if (dates.length === 0) {
         return <div>Loading</div>;
     }
 
     return (
-        <div className="flex items-center space-x-2">
-            <button
-                className="bg-slate-500 rounded-sm p-1"
-                onClick={null}
-            >
-                Prev Date
-            </button>
+        <div className="flex flex-col items-center justify-center space-y-2">
+            <div className="flex items-center space-x-2">
+                <button
+                    className="bg-slate-500 rounded-sm p-1"
+                    onClick={null}
+                >
+                    Prev Date
+                </button>
 
-            {dates.map((date) => (
-                <div key={date.DayNum} className="flex-1 cursor-pointer">
-                    <div className="bg-gray-200 p-2 rounded-md text-center">
-                        <p className="text-lg font-semibold">{date.Day}</p>
-                        <p className="text-sm">
-                            {date.DayNum}/{date.Month}
-                        </p>
+                {dates.map((date) => (
+                    <div key={date.DayNum} id={date.DayNum + ' ' + date.Month} className="flex-1 cursor-pointer" onClick={handleMenu}>
+                        <div className="bg-gray-200 p-2 rounded-md text-center">
+                            <p className="text-lg font-semibold">{date.Day}</p>
+                            <p className="text-sm">
+                                {date.DayNum}/{date.Month}
+                            </p>
+                        </div>
                     </div>
-                </div>
-            ))}
+                ))}
 
-            <button
-                className="bg-slate-500 rounded-sm p-1"
-                onClick={null}
-            >
-                Next Date
-            </button>
+                <button
+                    className="bg-slate-500 rounded-sm p-1"
+                    onClick={null}
+                >
+                    Next Date
+                </button>
+            </div>
+            { selectedDate !== null && <CalendarMenu doses={selectedDateDoses}/> }
         </div>
 
 
