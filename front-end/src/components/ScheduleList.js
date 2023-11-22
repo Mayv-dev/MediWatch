@@ -23,7 +23,7 @@ function ScheduleList(props) {
     let [list,setList] = useState(dateConversion)
     return (
         <>
-        <div className="w-screen bg-commonBG-100 h-screen flex flex-col align-center justify-center items-center">
+        <div className="w-1/2">
             <h2>Schedule</h2>
             <ul>
                 {list.map(listItem => <li>{listItem}</li>)}
