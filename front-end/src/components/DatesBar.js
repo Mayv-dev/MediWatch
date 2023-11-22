@@ -75,15 +75,16 @@ function DatesBar(props) {
     }, []);
 
     const prevDate = () => {
-        
+
     };
 
     const nextDate = () => {
 
     };
 
-    const handleMenu = (e) => {
-        const [dayNum, month] = e.currentTarget.id.split(' ');
+    const handleMenu = (e, index) => {
+        const [dayNum, month, selected] = e.currentTarget.id.split(' ');
+        console.log(dayNum, month, selected);
         setSelectedDate({ dayNum, month });
         setselectedDateDoses([])
         props.userInfo.schedule.forEach(element => {
@@ -91,7 +92,7 @@ function DatesBar(props) {
             if (date.getDate() === parseInt(dayNum) && date.getMonth() + 1 === parseInt(month)) {
                 setselectedDateDoses((prevState) => [...prevState, element]);
             }
-        }); 
+        });
     }
 
     if (dates.length === 0) {
@@ -108,16 +109,32 @@ function DatesBar(props) {
                     Prev Date
                 </button>
 
-                {dates.map((date) => (
-                    <div key={date.DayNum} id={date.DayNum + ' ' + date.Month} className="flex-1 cursor-pointer" onClick={handleMenu}>
-                        <div className="bg-gray-200 p-2 rounded-md text-center">
-                            <p className="text-lg font-semibold">{date.Day}</p>
-                            <p className="text-sm">
-                                {date.DayNum}/{date.Month}
-                            </p>
+                {
+
+                    dates.map((date) => {
+                        let selected = false;
+
+                        if (selectedDate !== null) {
+                            if (date.DayNum === parseInt(selectedDate.dayNum) && date.Month === parseInt(selectedDate.month)) {
+                                selected = true;
+                            } else {
+                                selected = false;
+                            }
+                        }
+
+                        return(
+                        <div key={date.DayNum} id={date.DayNum + ' ' + date.Month + ' ' + selected} className="flex-1 cursor-pointer" onClick={handleMenu}>
+                            <div className={` ${selected ? 'bg-green-400' : 'bg-gray-200'} p-2 rounded-md text-center`}>
+                                <p className="text-lg font-semibold">{date.Day}</p>
+                                <p className="text-sm">
+                                    {date.DayNum}/{date.Month}
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                ))}
+                        )
+                    })
+
+                }
 
                 <button
                     className="bg-slate-500 rounded-sm p-1"
@@ -126,7 +143,7 @@ function DatesBar(props) {
                     Next Date
                 </button>
             </div>
-            { selectedDate !== null && <CalendarMenu doses={selectedDateDoses}/> }
+            {selectedDate !== null && <CalendarMenu doses={selectedDateDoses} />}
         </div>
 
 
