@@ -10,11 +10,7 @@
     
     "pillbox": {
         "uuid": "unique id",
-        "compartments": [
-            {
-                "uuid": "unique id"
-            }
-        ]
+        "numbercompartments": number
     },
 
     "medications": [
@@ -27,7 +23,7 @@
     "schedule": [
         {
             "datetime": "ISODate",
-            "compartment id": "unique id",
+            "compartment": number,
             "medication list": [
                 {
                     "medication id": "unique id"
@@ -54,7 +50,7 @@
 ```JSON
 {
     "uuid": "unique id",
-    "email": "user email",
+    "email": "email",
     "password": "password hash",
     "cares for": [
         {
