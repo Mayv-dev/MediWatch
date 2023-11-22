@@ -10,4 +10,5 @@ type User struct {
 	Medications []Medication       `json:"medications,omitempty"`
 	Schedule    []Schedule         `json:"schedule,omitempty"`
 	History     []History          `json:"history,omitempty"`
+	Events      []Event            `json:"events,omitempty"`
 }

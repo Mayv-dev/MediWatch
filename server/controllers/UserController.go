@@ -21,6 +21,8 @@ var validate = validator.New()
 
 const defaultNumberCompartments = 7
 
+var LoggedInUser primitive.ObjectID
+
 func GetUser(c *gin.Context) {
 	id := c.Param("id")
 
@@ -221,6 +223,7 @@ func RegisterUser(c *gin.Context) {
 	newMedications := []models.Medication{}
 	newSchedule := []models.Schedule{}
 	newHistory := []models.History{}
+	newEvents := []models.Event{}
 
 	newUser := models.User{
 		Id:          primitive.NewObjectID(),
@@ -230,6 +233,7 @@ func RegisterUser(c *gin.Context) {
 		Medications: newMedications,
 		Schedule:    newSchedule,
 		History:     newHistory,
+		Events:      newEvents,
 	}
 
 	err = userCollection.FindOne(ctx, bson.M{"email": newUser.Email}).Decode(&user)
@@ -300,6 +304,8 @@ func LoginUser(c *gin.Context) {
 		History:     user.History,
 	}
 
+	LoggedInUser = loginUser.Id
+
 	c.JSON(http.StatusOK, views.UserView{Status: http.StatusOK, Message: "Success", Data: loginUser})
 }
 
@@ -335,6 +341,7 @@ func GoogleLoginUser(c *gin.Context) {
 			newMedications := []models.Medication{}
 			newSchedule := []models.Schedule{}
 			newHistory := []models.History{}
+			newEvents := []models.Event{}
 
 			newUser := models.User{
 				Id:          primitive.NewObjectID(),
@@ -343,6 +350,7 @@ func GoogleLoginUser(c *gin.Context) {
 				Medications: newMedications,
 				Schedule:    newSchedule,
 				History:     newHistory,
+				Events:      newEvents,
 			}
 
 			result, err := userCollection.InsertOne(ctx, newUser)
@@ -370,6 +378,8 @@ func GoogleLoginUser(c *gin.Context) {
 		Schedule:    user.Schedule,
 		History:     user.History,
 	}
+
+	LoggedInUser = loginUser.Id
 
 	c.JSON(http.StatusOK, views.UserView{Status: http.StatusOK, Message: "Success", Data: loginUser})
 }

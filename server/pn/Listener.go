@@ -16,12 +16,6 @@ func Listen(pbnb *pubnub.PubNub, wg *sync.WaitGroup) {
 	fmt.Println()
 	for {
 		select {
-		case signal := <-listener.Signal:
-			fmt.Println(signal.Channel)
-			fmt.Println(signal.Subscription)
-			fmt.Println(signal.Message)
-			fmt.Println(signal.Publisher)
-			fmt.Println(signal.Timetoken)
 		case status := <-listener.Status:
 			switch status.Category {
 			case pubnub.PNDisconnectedCategory:
@@ -38,9 +32,7 @@ func Listen(pbnb *pubnub.PubNub, wg *sync.WaitGroup) {
 				fmt.Println("Denied")
 			}
 		case message := <-listener.Message:
-			fmt.Println(message.Message)
-			fmt.Println(message.Publisher)
-			fmt.Println(message.Timetoken)
+			HandleMessage(message)
 		}
 	}
 }
