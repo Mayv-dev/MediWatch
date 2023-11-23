@@ -17,7 +17,6 @@ import (
 var userCollection *mongo.Collection = configs.GetCollection(configs.DB, "Users")
 
 func HandleMessage(message *pubnub.PNMessage) {
-	fmt.Println(message.Message)
 	jsonStr := message.Message.(string)
 	event := &models.Event{}
 	err := json.Unmarshal([]byte(jsonStr), event)
@@ -25,7 +24,6 @@ func HandleMessage(message *pubnub.PNMessage) {
 		fmt.Println(err.Error())
 		return
 	}
-	fmt.Println(event)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
