@@ -37,9 +37,9 @@ function ScheduleList(props) {
     return (
         <>
         <div className="flex flex-col w-1/2 h-3/4">
-        <h2 className="border-t-2 border-l-2 border-r-2 rounded-tl-md w-3/4 mx-auto rounded-tr-md border-gray-300 bg-gray-200">Schedule</h2>
-            <div className="border-2 p-1 h-full border-gray-300 rounded-br rounded-bl w-3/4 m-auto bg-white overflow-y-scroll ">
-                <ul className="h-full">
+        <h2 className="border-t border-l border-r rounded-tl-md w-3/4 mx-auto rounded-tr-md border-black bg-gray-200">Schedule</h2>
+            <div className="border p-1 h-full border-black rounded-br rounded-bl w-3/4 m-auto bg-white  ">
+                <ul className="h-full overflow-y-scroll">
                     {list == undefined ? <h1>No schedule has been set</h1>:
                     list.map(listItem => <li className="border-2 m-1 bg-gray-100">{listItem}</li>)}
                 </ul>

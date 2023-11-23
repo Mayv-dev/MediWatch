@@ -47,14 +47,14 @@ function CompartmentMenu(props) {
     }
 
     return (
-        <div id="compartmentInfo-menu" className="flex justify-center bg-white h-40 w-10/12">
-            <div id="time-column" class="flex-column w-1/4">
-                <h2>Doses</h2>
-                <ul>{chosenComparment.length === 0 ? <li>No medication to be taken</li> : chosenComparment.map(dose => <li onClick={() => handleMedClick(dose)}>{dose.time}</li>)}</ul>
+        <div id="compartmentInfo-menu" className="flex justify-center bg-white h-full w-7/12 mt-4 border border-black rounded">
+            <div id="time-column" class="flex-column text-center border border-black rounded m-4 w-1/4">
+                <h2 className="border border-b-black bg-gray-200 rounded-tr rounded-tl">Doses</h2>
+                <ul>{chosenComparment.length === 0 ? <li>No medication to be taken</li> : chosenComparment.map(dose => <li className="cursor-pointer" onClick={() => handleMedClick(dose)}>{dose.time}</li>)}</ul>
             </div>
-            <div id="med-column" className="flex-column w-1/4">
-                <h2>Medications</h2>
-                <ul>{selectedMedications.length === 0 ? null : chosenComparment.map(dose => dose.medications.map(medication => <li>{medication}</li>))}</ul>
+            <div id="med-column" className="flex-column text-center border border-black rounded m-4 w-1/4">
+                <h2 className="border border-b-black bg-gray-200 rounded-tr rounded-tl">Medications</h2>
+                <ul>{selectedMedications.length === 0 ? <li>No dose selected</li> : chosenComparment.map(dose => dose.medications.map(medication => <li className="border-b border-b-black">{medication}</li>))}</ul>
             </div>     
         </div>
     )

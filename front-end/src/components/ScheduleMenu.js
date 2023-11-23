@@ -87,12 +87,12 @@ function ScheduleMenu(props) {
     return (
         <>
         <div className="flex flex-col items-center m-auto w-1/2 h-3/4">
-                <div className="flex flex-col items-center border-t-2 h-full border-2 w-3/5 m-auto rounded-md border-gray-300 bg-white">
-                    <h2 className="border-b-2 rounded-tr rounded-tl w-full border-gray-300 bg-gray-200 mb-5">Add Dose</h2>
+                <div className="flex flex-col items-center border h-full w-3/5 m-auto rounded-md border-black bg-white">
+                    <h2 className="border-b rounded-tr rounded-tl w-full border-black bg-gray-200 mb-5">Add Dose</h2>
                     <label className="mt-3" for="Medication">Medication: </label>
                     <ul className="flex flex-row justify-center w-full">
                         {newMedications.length == 0 ? <li>No medications to display</li> :
-                        newMedications.map(med => <li onClick={e => handleMedDelete(med)} className="border-2 border-black rounded-md bg-white hover:bg-red-400 mx-0.5 my-2  p-0.5">{med.name}</li>)}
+                        newMedications.map(med => <li onClick={e => handleMedDelete(med)} className="border-2 border-black rounded-md bg-white hover:bg-red-400 mx-0.5 my-2 p-0.5 cursor-pointer">{med.name} <span className="text-red-600">x</span></li>)}
                     </ul>
                     <select className={"flex flex-col border-2 border-gray-300 rounded-md w-4/6 mx-auto "+missingValues[0]} name="Medication" onChange={e => handleMedSelect(e.target.value)}>
                         {props.meds == undefined ? null : props.meds.map(med => <option value={med.id + "||" + med.name}>{med.name}</option>)}

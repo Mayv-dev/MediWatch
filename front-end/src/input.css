@@ -67,6 +67,7 @@
 #medication-box {
   display: flex;
   flex-direction: row;
+  justify-content: center;
 }
 
 #compartment-menu {

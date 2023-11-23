@@ -83,33 +83,40 @@ function LoginPage(props) {
     return (
         <form className="w-screen h-screen flex flex-col align-center justify-center items-center" onSubmit={handleSubmit}>
 
-            <h1 class="text-5xl text-commonTitle-900 my-4">MediWatch</h1>
+            <h1 class="text-5xl text-commonTitle-900 my-10">Log In</h1>
             
             <input 
-                className="my-2 border-2 border-white p-1 rounded-sm bg-slate-100" 
+                className="my-2 border-2 w-52 border-white p-1 rounded-sm bg-slate-100" 
                 placeholder="Email" 
                 name="email" 
                 onChange={handleChange}
             />
             <input 
-                className="my-2 border-2 border-white p-1 rounded-sm bg-slate-100" 
+                className="my-2 border-2 w-52 border-white p-1 rounded-sm bg-slate-100" 
                 placeholder="Password" 
                 name="password" 
                 type="password" 
                 onChange={handleChange}
             />
 
-<div>
-      <GoogleLogin
-        clientId={REACT_PUBLIC_GOOGLE_CLIENT_ID}
-        onSuccess={onSuccess}
-        onFailure={onFailure}
-      />
-    </div>
+
 
             {invalidCredentials ? <div className="bg-rose-600 p-2 text-white"><p>The supplied user information is invalid, please try again</p></div>:null}
             
-            <input className="my-3 border-2 border-black p-2 rounded-lg bg-blue-300" type="submit" value="Enter App"/>
+            <div className="flex flex-col w-full justify-center items-center mx-auto">
+              <input className="my-2 border-2 w-24 border-black p-2 rounded-lg bg-blue-300" type="submit" value="Enter App"/>
+
+              <p className="my-1 text-white">or</p>
+
+              <div className=" w-42 my-2">
+                <GoogleLogin
+                  clientId={REACT_PUBLIC_GOOGLE_CLIENT_ID}
+                  onSuccess={onSuccess}
+                  onFailure={onFailure}
+                />
+              </div>
+
+              </div>
             <div class="g-signin2" data-onsuccess="onSignIn"></div>
             
 

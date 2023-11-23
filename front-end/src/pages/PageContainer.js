@@ -10,7 +10,9 @@ function PageContainer() {
     const [userData, setUserData] = useState()
     const [userSchedule, setUserSchedule] = useState()
     const [currentPage, setCurrentPage] = useState()
-    const [LDMode, setLDMode] = useState("bg-commonBG-900")
+    const [LDMode, setLDMode] = useState("bg-gradient-to-t from-commonBG-900 to-[#552244]")
+    let [navColour, setNavColour] = useState("bg-[#502246]")
+    let [navTextColour, setNavTextColour] = useState("text-white")
 
     const handleUserData = (data) => {
         setUserId(data.id)
@@ -26,11 +28,17 @@ function PageContainer() {
 
     const handlePageSwitch = (page) => userData != null ? setCurrentPage(page) : null
 
-    const handleLDSwitch = (e) => setLDMode(LDMode == "bg-commonBG-900" ? "bg-commonBG-100" : "bg-commonBG-900")
+    const handleLDSwitch = (e) => {
+        setLDMode(LDMode == "bg-gradient-to-t from-commonBG-900 to-[#552244]" ? "bg-gradient-to-t from-commonBG-900 to-[#77cff2]" : "bg-gradient-to-t from-commonBG-900 to-[#552244]")
+        setNavColour(navColour == "bg-[#502246]" ? "bg-[#6fbee3]" : "bg-[#502246]")
+        setNavTextColour(navTextColour == "text-white" ? "text-black" : "text-white")
+    }
+
+    
 
     return (
         <div className={LDMode}>
-            <Navbar LDModeSwitch={handleLDSwitch} pageChange={handlePageSwitch}/>
+            <Navbar LDModeSwitch={handleLDSwitch} pageChange={handlePageSwitch} navColour={navColour} textColour={navTextColour} page={currentPage}/>
             {userData == null ? <LoginPage handleUserData={handleUserData}/> : null}
             {currentPage == "home" && currentPage != "calendar" && currentPage != "schedule" ? <HomePage loggedInUser={userData} schedule={userSchedule}/> : null}
             {currentPage == "calendar" && currentPage != "home" && currentPage != "schedule" ? <CalendarPage loggedInUser={userData} schedule={userSchedule}/> : null}
