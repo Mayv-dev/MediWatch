@@ -14,7 +14,7 @@ class PubNubConnection:
         pnconfig.user_id = "Testing"
         self.pubnub = PubNub(pnconfig)
 
-    def publish(self, message: str) -> str:
+    def publish(self, message: str):
         self.pubnub.publish() \
         .channel(os.getenv('PUBNUB_CHANNEL')) \
         .message(message). \
@@ -23,6 +23,7 @@ class PubNubConnection:
 
     def __publishCallback(self, result, status):
         if status.is_error():
-            return "Error"
+            print("Error:")
+            return
         
-        return "Success"
+        print("Success")

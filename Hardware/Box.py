@@ -1,6 +1,7 @@
 from Parts.MicroSwitch import MicroSwitch
 from PubNubConnection import PubNubConnection
 import time
+from Message import Message
 
 class Box:
     switch1: MicroSwitch
@@ -13,5 +14,7 @@ class Box:
     def run(self):
         while(True):
             if(self.switch1.is_open()):
-                print(self.pubnub.publish("Box 1 is open"))
+                self.pubnub.publish(
+                    (Message(0, 'switch', True).to_json())
+                )
             time.sleep(5)
