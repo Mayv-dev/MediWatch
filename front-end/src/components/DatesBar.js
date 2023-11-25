@@ -79,7 +79,7 @@ function DatesBar(props) {
     };
 
     const nextDate = () => {
-
+    
     };
 
     const handleMenu = (e, index) => {
@@ -111,7 +111,6 @@ function DatesBar(props) {
                 </button>
 
                 {
-
                     dates.map((date) => {
                         let selected = false;
 
@@ -139,7 +138,7 @@ function DatesBar(props) {
 
                 <button
                     className="bg-slate-500 rounded-sm p-1"
-                    onClick={null}
+                    onClick={nextDate}
                 >
                     Next Date
                 </button>
