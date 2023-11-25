@@ -4,7 +4,7 @@ function SchedulePage(props) {
         return (
             <>
             <div class="flex items-center text-center h-screen w-screen">
-                <ScheduleList schedule={props.schedule}/>
+                <ScheduleList userID={props.loggedInUser.id} schedule={props.schedule}/>
                 <ScheduleMenu meds={props.loggedInUser.medications} userID={props.loggedInUser.id} updateSchedule={props.updateSchedule}/>
             </div>
             </>
