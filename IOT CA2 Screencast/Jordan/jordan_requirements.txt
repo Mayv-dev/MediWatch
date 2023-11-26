@@ -1,0 +1,4 @@
+"Each member of the teams contribution to CA2", your part of that in the brief
+showing the hardware and an updated fritzing diagram
+the hardware half of pubnub communication
+"Discuss any known issues with the application and plans for completion", also your part of that in the brief
