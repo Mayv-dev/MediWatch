@@ -1,4 +1,0 @@
-"Each member of the teams contribution to CA2", your part of that in the brief
-covering the SSL setup
-covering how the site is served
-"Discuss any known issues with the application and plans for completion", also your part of that in the brief

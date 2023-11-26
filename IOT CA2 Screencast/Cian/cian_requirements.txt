@@ -1,4 +1,0 @@
-"Each member of the teams contribution to CA2", your part of that in the brief
-covering the UI, google login, and relating it to the server
-talking about setting up the project on AWS
-"Discuss any known issues with the application and plans for completion", also your part of that in the brief
