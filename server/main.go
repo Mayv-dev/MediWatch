@@ -16,7 +16,12 @@ func main() {
 	router := gin.Default()
 
 	corsConfig := cors.DefaultConfig()
+
+	//Dev
 	corsConfig.AllowOrigins = []string{"http://localhost:3000"}
+
+	//Prod
+	//corsConfig.AllowAllOrigins = true
 
 	router.Use(cors.New(corsConfig))
 
@@ -33,7 +38,11 @@ func main() {
 	wg.Add(1)
 	go pn.Listen(pbnb, wg)
 
+	//Dev
 	router.Run("localhost:4000")
+
+	//Prod
+	//router.RunTLS(":8080", "/etc/letsencrypt/live/mediwatch.online/cert.pem", " /etc/letsencrypt/live/mediwatch.online/privkey.pem")
 
 	wg.Wait()
 }
