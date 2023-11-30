@@ -1,5 +1,5 @@
 import Navbar from "../components/Navbar";
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import LoginPage from "./LoginPage";
 import HomePage from "./HomePage";
 import CalendarPage from "./CalendarPage";
@@ -34,15 +34,23 @@ function PageContainer() {
         setNavTextColour(navTextColour == "text-white" ? "text-black" : "text-white")
     }
 
-    
 
+    const deleteSchedule = (sID) => {
+        //const scheduleIndex = userSchedule.findIndex((schedule => schedule.id === sID))
+        
+        setUserSchedule(prev => {
+            return prev.filter(schedule => schedule.id !== sID)
+        })
+        
+    }
+    
     return (
         <div className={LDMode}>
             <Navbar LDModeSwitch={handleLDSwitch} pageChange={handlePageSwitch} navColour={navColour} textColour={navTextColour} page={currentPage}/>
             {userData == null ? <LoginPage handleUserData={handleUserData}/> : null}
             {currentPage == "home" && currentPage != "calendar" && currentPage != "schedule" ? <HomePage loggedInUser={userData} schedule={userSchedule}/> : null}
             {currentPage == "calendar" && currentPage != "home" && currentPage != "schedule" ? <CalendarPage loggedInUser={userData} schedule={userSchedule}/> : null}
-            {currentPage == "schedule" && currentPage != "home" && currentPage != "calendar" ? <SchedulePage loggedInUser={userData} schedule={userSchedule} updateSchedule={handleScheduleUpdate}/> : null}
+            {currentPage == "schedule" && currentPage != "home" && currentPage != "calendar" ? <SchedulePage loggedInUser={userData} schedule={userSchedule} updateSchedule={handleScheduleUpdate} deleteSchedule={deleteSchedule}/> : null}
         </div>
     )
 }

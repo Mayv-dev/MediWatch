@@ -4,7 +4,7 @@ import {SERVER_HOST} from "../config/global_constants";
 function ScheduleList(props) { 
     let first = true;
     const monthStrings = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
-    let [dateConversion,setDateConversion] = useState({id: props.schedule.map(item => item.id), datetime: props.schedule.map(item => new Date(item.datetime))})
+    let [dateConversion,setDateConversion] = useState(props.schedule !== undefined ? {id: props.schedule.map(item => item.id), datetime: props.schedule.map(item => new Date(item.datetime))} : null)
     
     const handleDateConvert = () => {
         let minutes, hours, day, month;
@@ -29,7 +29,8 @@ function ScheduleList(props) {
     }
 
     useEffect(() => {
-        setDateConversion({id: props.schedule.map(item => item.id), datetime: props.schedule.map(item => new Date(item.datetime))})
+        setDateConversion(props.schedule !== undefined ? {id: props.schedule.map(item => item.id), datetime: props.schedule.map(item => new Date(item.datetime))}: null)
+        
     },[])
     handleDateConvert()
     
@@ -45,7 +46,20 @@ function ScheduleList(props) {
             headers: {
                 "Content-Type": "application/json"
             }
+        }).then(() => {
+            alert('Box Deleted')
+        }).then(() => {
+            const temp = list.filter(schedule => schedule.id !== sId)
+            setList(temp)
+        }).then(() => {
+            props.deleteSchedule(sId)
         })
+    }
+
+    if ( dateConversion === null || dateConversion === undefined) {
+        return (
+            <>No dates</>
+        )
     }
 
     return (
