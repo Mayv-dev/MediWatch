@@ -41,7 +41,7 @@ function PageContainer() {
         setUserSchedule(prev => {
             return prev.filter(schedule => schedule.id !== sID)
         })
-        
+   
     }
     
     return (

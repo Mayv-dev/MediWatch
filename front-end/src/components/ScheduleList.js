@@ -9,7 +9,7 @@ function ScheduleList(props) {
     const handleDateConvert = () => {
         let minutes, hours, day, month;
 
-        if(props.schedule != undefined) {
+        if(props.schedule != undefined && props.schedule != null && dateConversion !== null) {
             dateConversion =  dateConversion.datetime.map((date, index) => {
                 if (date.getDate() % 10 != 1) {
                     if (date.getDate() % 10 != 2) {
@@ -27,11 +27,14 @@ function ScheduleList(props) {
             })
         }
     }
+    
+    
 
     useEffect(() => {
+        console.log("props ",dateConversion)
         setDateConversion(props.schedule !== undefined ? {id: props.schedule.map(item => item.id), datetime: props.schedule.map(item => new Date(item.datetime))}: null)
         
-    },[])
+    },[props.schedule])
     handleDateConvert()
     
     let [list,setList] = useState(dateConversion)
@@ -56,11 +59,6 @@ function ScheduleList(props) {
         })
     }
 
-    if ( dateConversion === null || dateConversion === undefined) {
-        return (
-            <>No dates</>
-        )
-    }
 
     return (
         <>
@@ -68,8 +66,8 @@ function ScheduleList(props) {
         <h2 className="border-t border-l border-r rounded-tl-md w-3/4 mx-auto rounded-tr-md border-black bg-gray-200">Schedule</h2>
             <div className="border p-1 h-full border-black rounded-br rounded-bl w-3/4 m-auto bg-white  ">
                 <ul className="h-full overflow-y-scroll">
-                    {list == undefined ? <h1>No schedule has been set</h1>:
-                    list.map(listItem => <li className="border-2 m-1 bg-gray-100 flex justify-around items-center">
+                    {dateConversion == undefined && list == null ? <h1>No schedule has been set</h1>:
+                    dateConversion.map(listItem => <li className="border-2 m-1 bg-gray-100 flex justify-around items-center">
                         {listItem.datetime}
                         <button id={listItem.id}  onClick={deleteDose} className="bg-red-600 rounded-md p-1 hover:bg-red-700">Delete Dose</button>
                     </li>)
