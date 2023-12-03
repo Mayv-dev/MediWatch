@@ -8,6 +8,7 @@ import { gapi } from 'gapi-script';
 
 function RegisterPage(props) {
     const [inputs, setInputs] = useState({}) 
+    const [existingUser, setExistingUser] = useState(false) 
 
     const handleSubmit = (e) => {
       e.preventDefault();
@@ -23,7 +24,7 @@ function RegisterPage(props) {
           }
       })
       .then((response) => response.json())
-      .then(response => response.status == 201 ? handleSuccessfulRegister() : console.log(response))
+      .then(response => response.status == 201 ? handleSuccessfulRegister() : setExistingUser(true))
       .catch((error) => {
           console.error('Error')
       })
@@ -74,6 +75,8 @@ function RegisterPage(props) {
                 onChange={handleChange}
             />
             
+            {existingUser ? <div className="bg-rose-600 p-2 text-white"><p>This account already exists</p></div>:null}
+
             <div className="flex flex-col w-full justify-center items-center mx-auto">
               <input className="my-2 border-2 w-24 border-black p-2 rounded-lg bg-blue-300" type="submit" value="Enter App"/>
             </div>
