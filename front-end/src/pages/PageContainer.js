@@ -49,7 +49,7 @@ function PageContainer() {
         <div className={LDMode}>
             <Navbar LDModeSwitch={handleLDSwitch} pageChange={handlePageSwitch} navColour={navColour} textColour={navTextColour} page={currentPage}/>
             {userData == null && currentPage == "login" ? <LoginPage handleUserData={handleUserData} handlePageSwitch={handlePageSwitch}/> : null}
-            {userData == null && currentPage == "register" ? <RegisterPage handleUserRegister={handleUserData}/> : null}
+            {userData == null && currentPage == "register" ? <RegisterPage handleUserData={handleUserData} handleUserRegister={handleUserData}/> : null}
             {currentPage == "home" ? <HomePage loggedInUser={userData} schedule={userSchedule}/> : null}
             {currentPage == "calendar" ? <CalendarPage loggedInUser={userData} schedule={userSchedule}/> : null}
             {currentPage == "schedule" ? <SchedulePage loggedInUser={userData} schedule={userSchedule} updateSchedule={handleScheduleUpdate} deleteSchedule={deleteSchedule}/> : null}

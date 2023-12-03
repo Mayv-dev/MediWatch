@@ -23,10 +23,32 @@ function RegisterPage(props) {
           }
       })
       .then((response) => response.json())
-      .then(response => response.status == 200 ? props.handleUserData(response.data) : console.log(response))
+      .then(response => response.status == 201 ? handleSuccessfulRegister() : console.log(response))
       .catch((error) => {
           console.error('Error')
       })
+  }
+
+  const handleSuccessfulRegister = () => {
+        fetch(`${SERVER_HOST}/user/login`, {
+            method: "POST",
+            mode: "cors",
+            body: JSON.stringify({
+                email:inputs["email"],
+                password:inputs["password"]
+            }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .then((response) => response.json())
+        .then(response => {
+          console.log(response.data)
+          props.handleUserData(response.data)
+        })
+        .catch((error) => {
+            console.error('Error')
+        })
   }
 
   const handleChange = (e) => {
