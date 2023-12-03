@@ -77,8 +77,6 @@ function RegisterPage(props) {
             <div className="flex flex-col w-full justify-center items-center mx-auto">
               <input className="my-2 border-2 w-24 border-black p-2 rounded-lg bg-blue-300" type="submit" value="Enter App"/>
             </div>
-            
-            <button onClick={e=>props.handlePageSwitch("login")}>Login</button>
 
         </form>
     )
