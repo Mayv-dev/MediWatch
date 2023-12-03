@@ -19,7 +19,7 @@ function Navbar(props) {
                         <li>
                         <a href="#" onClick={e => props.LDModeSwitch(e)} class={props.textColour + " block py-2 " + props.navColour}>Switch mode</a>
                         </li>
-                        {props.page == undefined ? null :
+                        {props.page == "login" || props.page == "register" ? null :
                         <>
                             <li>
                             <a href="#" onClick={() => props.pageChange("home")} class={props.textColour + " block py-2 " + props.navColour}>Home</a>

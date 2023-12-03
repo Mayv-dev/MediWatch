@@ -118,7 +118,7 @@ function LoginPage(props) {
 
               </div>
             <div class="g-signin2" data-onsuccess="onSignIn"></div>
-            
+            <button onClick={e=>props.handlePageSwitch("register")}>Register</button>
 
         </form>
     )

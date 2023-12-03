@@ -4,12 +4,13 @@ import LoginPage from "./LoginPage";
 import HomePage from "./HomePage";
 import CalendarPage from "./CalendarPage";
 import SchedulePage from "./SchedulePage";
+import RegisterPage from "./RegisterPage";
 
 function PageContainer() {
     const [userId, setUserId] = useState()
     const [userData, setUserData] = useState()
     const [userSchedule, setUserSchedule] = useState()
-    const [currentPage, setCurrentPage] = useState()
+    const [currentPage, setCurrentPage] = useState("login")
     const [LDMode, setLDMode] = useState("bg-gradient-to-t from-commonBG-900 to-[#552244]")
     let [navColour, setNavColour] = useState("bg-[#502246]")
     let [navTextColour, setNavTextColour] = useState("text-white")
@@ -26,7 +27,7 @@ function PageContainer() {
         setUserSchedule(data)
     }
 
-    const handlePageSwitch = (page) => userData != null ? setCurrentPage(page) : null
+    const handlePageSwitch = (page) => setCurrentPage(page)
 
     const handleLDSwitch = (e) => {
         setLDMode(LDMode == "bg-gradient-to-t from-commonBG-900 to-[#552244]" ? "bg-gradient-to-t from-commonBG-900 to-[#77cff2]" : "bg-gradient-to-t from-commonBG-900 to-[#552244]")
@@ -47,10 +48,11 @@ function PageContainer() {
     return (
         <div className={LDMode}>
             <Navbar LDModeSwitch={handleLDSwitch} pageChange={handlePageSwitch} navColour={navColour} textColour={navTextColour} page={currentPage}/>
-            {userData == null ? <LoginPage handleUserData={handleUserData}/> : null}
-            {currentPage == "home" && currentPage != "calendar" && currentPage != "schedule" ? <HomePage loggedInUser={userData} schedule={userSchedule}/> : null}
-            {currentPage == "calendar" && currentPage != "home" && currentPage != "schedule" ? <CalendarPage loggedInUser={userData} schedule={userSchedule}/> : null}
-            {currentPage == "schedule" && currentPage != "home" && currentPage != "calendar" ? <SchedulePage loggedInUser={userData} schedule={userSchedule} updateSchedule={handleScheduleUpdate} deleteSchedule={deleteSchedule}/> : null}
+            {userData == null && currentPage == "login" ? <LoginPage handleUserData={handleUserData} handlePageSwitch={handlePageSwitch}/> : null}
+            {userData == null && currentPage == "register" ? <RegisterPage handleUserRegister={handleUserData}/> : null}
+            {currentPage == "home" ? <HomePage loggedInUser={userData} schedule={userSchedule}/> : null}
+            {currentPage == "calendar" ? <CalendarPage loggedInUser={userData} schedule={userSchedule}/> : null}
+            {currentPage == "schedule" ? <SchedulePage loggedInUser={userData} schedule={userSchedule} updateSchedule={handleScheduleUpdate} deleteSchedule={deleteSchedule}/> : null}
         </div>
     )
 }
