@@ -1,11 +1,8 @@
-import { SERVER_HOST, REACT_PUBLIC_GOOGLE_CLIENT_ID } from "../config/global_constants";
-import { GoogleLogin } from 'react-google-login';
-import { useState, useEffect } from "react"
-import { gapi } from 'gapi-script';
+import { SERVER_HOST} from "../config/global_constants";
+import { useState } from "react"
 import validator from 'validator';
 
 // Form code was made with help from https://www.w3schools.com/react/react_forms.asp
-// GoogleLogin and gapi code was taken from https://stackoverflow.com/questions/72172877/having-a-trouble-with-google-oauth2-app-has-no-backend-so-client-side-only
 
 function RegisterPage(props) {
     const [inputs, setInputs] = useState({})
@@ -30,9 +27,7 @@ function RegisterPage(props) {
     const handleSubmit = (e) => {  
         e.preventDefault();
 
-        if(validInputs() === false) {
-            return
-        }
+        if(validInputs() === false) return
 
         fetch(`${SERVER_HOST}/user/register`, {
             method: "POST",
@@ -45,11 +40,11 @@ function RegisterPage(props) {
                 "Content-Type": "application/json"
             }
         })
-            .then((response) => response.json())
-            .then(response => response.status == 201 ? handleSuccessfulRegister() : setExistingUser(true))
-            .catch((error) => {
-                console.error('Error')
-            })
+        .then((response) => response.json())
+        .then(response => response.status == 201 ? handleSuccessfulRegister() : setExistingUser(true))
+        .catch((error) => {
+            console.error('Error')
+        })
     }
 
     const handleSuccessfulRegister = () => {
@@ -64,23 +59,20 @@ function RegisterPage(props) {
                 "Content-Type": "application/json"
             }
         })
-            .then((response) => response.json())
-            .then(response => {
-                console.log(response.data)
-                props.handleUserData(response.data)
-            })
-            .catch((error) => {
-                console.error('Error')
-            })
+        .then((response) => response.json())
+        .then(response => {
+            console.log(response.data)
+            props.handleUserData(response.data)
+        })
+        .catch((error) => {
+            console.error('Error')
+        })
     }
 
-    const handleChange = (e) => {
-        setInputs(values => ({ ...values, [e.target.name]: e.target.value }))
-    }
+    const handleChange = (e) => setInputs(values => ({ ...values, [e.target.name]: e.target.value }))
 
     return (
         <form className="w-screen h-screen flex flex-col align-center justify-center items-center" onSubmit={handleSubmit}>
-
             <h1 class="text-5xl text-commonTitle-900 my-10">Register</h1>
 
             <input
@@ -103,7 +95,6 @@ function RegisterPage(props) {
             <div className="flex flex-col w-full justify-center items-center mx-auto">
                 <input className="my-2 border-2 w-24 border-black p-2 rounded-lg bg-blue-300" type="submit" value="Enter App" />
             </div>
-
         </form>
     )
 }

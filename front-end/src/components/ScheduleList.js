@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 import {SERVER_HOST} from "../config/global_constants";
 
 function ScheduleList(props) { 
-    let first = true;
     const monthStrings = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
     let [dateConversion,setDateConversion] = useState(props.schedule !== undefined ? {id: props.schedule.map(item => item.id), datetime: props.schedule.map(item => new Date(item.datetime))} : null)
     
@@ -31,9 +30,7 @@ function ScheduleList(props) {
     
 
     useEffect(() => {
-        console.log("props ",dateConversion)
         setDateConversion(props.schedule !== undefined ? {id: props.schedule.map(item => item.id), datetime: props.schedule.map(item => new Date(item.datetime))}: null)
-        
     },[props.schedule])
     handleDateConvert()
     

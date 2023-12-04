@@ -4,7 +4,6 @@ import {SERVER_HOST} from "../config/global_constants";
 function ScheduleMenu(props) { 
     let [inputError,setInputError] = useState(false)
 
-    
     let [newMedications,setNewMedications] = useState([])
     let [newDate,setNewDate] = useState()
     let [newTime,setNewTime] = useState()
@@ -17,7 +16,6 @@ function ScheduleMenu(props) {
         try {
             if(newCompartment == null) throw console.error();
             e = Date.parse(newDate)
-            console.log(e)
             hours = newTime.substring(0,2)
             hours = parseInt(hours) * 3600000
             minutes = newTime.substring(3)
@@ -26,7 +24,6 @@ function ScheduleMenu(props) {
             dateTime = new Date(e).toISOString()
             if(newMedications.length == 0) throw console.error();
             medIDs = newMedications.map(newMed => newMed.id)
-            console.log(medIDs)
             }
         catch(e) {
             setInputError(true)
@@ -73,7 +70,6 @@ function ScheduleMenu(props) {
     }
 
     const handleMedSelect = (med) => {
-        console.log(med)
         let medicationID = (med.substring(0,med.indexOf("||")))
         if (newMedications.find(newMed => newMed.id == medicationID)) return
         let medicationName = (med.substring(med.indexOf("||")+2))

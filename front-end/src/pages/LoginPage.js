@@ -31,58 +31,41 @@ function LoginPage(props) {
     }
 
     useEffect(() => {
-        function start() {
-          gapi.client.init({
-            clientId: REACT_PUBLIC_GOOGLE_CLIENT_ID,
-            scope: 'email',
-          });
-        }
+      function start() {
+        gapi.client.init({
+          clientId: REACT_PUBLIC_GOOGLE_CLIENT_ID,
+          scope: 'email',
+        });
+      }
     
         gapi.load('client:auth2', start);
-      }, []);
-    
-    
-      // **you can access the token like this**
-      // const accessToken = gapi.auth.getToken().access_token;
-      // console.log(accessToken);
+    }, []);
     
       const onSuccess = response => {
-        fetch(`${SERVER_HOST}/user/googlelogin`, {
-          method: "POST",
-          mode: "cors",
-          body: JSON.stringify({
-              email:response.profileObj.email
-          }),
-          headers: {
-              "Content-Type": "application/json"
-          }
-      })
-      .then((response) => response.json())
-      .then(response => response.status == 200 ? props.handleUserData(response.data) : setInvalidCredentials(true))
-      .catch((error) => {
-          console.error('Error')
-      })
-      };
-      const onFailure = response => {
-        console.log('FAILED', response);
-      };
+      fetch(`${SERVER_HOST}/user/googlelogin`, {
+        method: "POST",
+        mode: "cors",
+        body: JSON.stringify({
+            email:response.profileObj.email
+        }),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then((response) => response.json())
+    .then(response => response.status == 200 ? props.handleUserData(response.data) : setInvalidCredentials(true))
+    .catch((error) => {
+        console.error('Error')
+    })
+    };
 
-    function onSignIn(googleUser) {
-        var profile = googleUser.getBasicProfile();
-        console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-        console.log('Name: ' + profile.getName());
-        console.log('Image URL: ' + profile.getImageUrl());
-        console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-      }
+    const onFailure = response => console.log('FAILED', response);
 
-    const handleChange = (e) => {
-        setInputs(values => ({...values, [e.target.name]: e.target.value}))
-    }
+    const handleChange = (e) => setInputs(values => ({...values, [e.target.name]: e.target.value}))
 
     //The icon to reveal/hide password could be improved by us, as the option disappears entirely after clicking away
     return (
         <form className="w-screen h-screen flex flex-col align-center justify-center items-center" onSubmit={handleSubmit}>
-
             <h1 class="text-5xl text-commonTitle-900 my-10">Log In</h1>
             
             <input 
@@ -99,8 +82,6 @@ function LoginPage(props) {
                 onChange={handleChange}
             />
 
-
-
             {invalidCredentials ? <div className="bg-rose-600 p-2 text-white"><p>The supplied user information is invalid, please try again</p></div>:null}
             
             <div className="flex flex-col w-full justify-center items-center mx-auto">
@@ -115,10 +96,8 @@ function LoginPage(props) {
                   onFailure={onFailure}
                 />
               </div>
-
-              </div>
-            <div class="g-signin2" data-onsuccess="onSignIn"></div>
-
+            </div>
+            <div class="g-signin2" data-onsuccess="onSignIn"/>
         </form>
     )
 }

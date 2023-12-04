@@ -1,22 +1,15 @@
 import { useState , useEffect } from "react"
 
 function CompartmentMenu(props) {
+    let [selectedMedications, setSelectedMedications] = useState([])
+
     let chosenComparment = []
     let medications = []
     let date, hours, minutes
 
-    //props.pillbox.map(e =>console.log(e))
-    //console.log(props.medications)
-    //console.log(props.selectedCompartment)
-
-    let [selectedMedications, setSelectedMedications] = useState([])
-    useEffect(()=> {
-        setSelectedMedications([])
-    },[props.selectedCompartment])
+    useEffect(()=> setSelectedMedications([]), [props.selectedCompartment])
 
     props.pillbox.map(compartmentInfo => compartmentInfo.id == props.selectedCompartment ? chosenComparment.push(compartmentInfo) : null)
-
-    console.log(chosenComparment)
 
     chosenComparment = chosenComparment.map(dose => {
         medications = []
@@ -30,13 +23,7 @@ function CompartmentMenu(props) {
     chosenComparment = chosenComparment.map(dose => {
         hours = dose.time.getHours() < 10 ? `0${dose.time.getHours()}` : `${dose.time.getHours()}`
         minutes = dose.time.getMinutes() < 10 ? `0${dose.time.getMinutes()}` : `${dose.time.getMinutes()}`
-
-        dose.medications = dose.medications.map(med => {
-            return props.medications.map(outerMed => {
-                if (med == outerMed.id) return outerMed.name
-            })
-        })
-
+        dose.medications = dose.medications.map(med => { return props.medications.map(outerMed => {if (med == outerMed.id) return outerMed.name}) })
         return {'time':hours + ":" + minutes,'medications':dose.medications}
     })
 

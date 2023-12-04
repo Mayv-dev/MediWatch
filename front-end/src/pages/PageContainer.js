@@ -5,14 +5,15 @@ import HomePage from "./HomePage";
 import CalendarPage from "./CalendarPage";
 import SchedulePage from "./SchedulePage";
 import RegisterPage from "./RegisterPage";
+import { DARK_BG, DARK_NAV, LIGHT_BG, LIGHT_NAV } from "../config/global_constants";
 
 function PageContainer() {
     const [userId, setUserId] = useState()
     const [userData, setUserData] = useState()
     const [userSchedule, setUserSchedule] = useState()
     const [currentPage, setCurrentPage] = useState("login")
-    const [LDMode, setLDMode] = useState("bg-gradient-to-t from-commonBG-900 to-[#552244]")
-    let [navColour, setNavColour] = useState("bg-[#502246]")
+    const [LDMode, setLDMode] = useState(DARK_BG)
+    let [navColour, setNavColour] = useState(DARK_NAV)
     let [navTextColour, setNavTextColour] = useState("text-white")
 
     const handleUserData = (data) => {
@@ -22,16 +23,13 @@ function PageContainer() {
         setCurrentPage("home")
     }
 
-    const handleScheduleUpdate = (data) => {
-        console.log(data)
-        setUserSchedule(data)
-    }
+    const handleScheduleUpdate = (data) => setUserSchedule(data)
 
     const handlePageSwitch = (page) => setCurrentPage(page)
 
     const handleLDSwitch = (e) => {
-        setLDMode(LDMode == "bg-gradient-to-t from-commonBG-900 to-[#552244]" ? "bg-gradient-to-t from-commonBG-900 to-[#77cff2]" : "bg-gradient-to-t from-commonBG-900 to-[#552244]")
-        setNavColour(navColour == "bg-[#502246]" ? "bg-[#6fbee3]" : "bg-[#502246]")
+        setLDMode(LDMode == DARK_BG ? LIGHT_BG : DARK_BG)
+        setNavColour(navColour == DARK_NAV ? LIGHT_NAV : DARK_NAV)
         setNavTextColour(navTextColour == "text-white" ? "text-black" : "text-white")
     }
 

@@ -15,7 +15,7 @@ function MedicationBox(props) {
         <div id="medication-box-container" className="w-10/12 h-1/3">
             <div id="medication-box" className="w-11/12 h-60 m-auto">
                 {pillbox == undefined ? <h1>You have no doses set</h1>:
-                pillbox.map(item =>
+                pillbox.map(item => 
                     <BoxCompartment key={item.id} identifier={item.id} schedule={schedule} colour={chosenBox === item.id} onSelection={handleSelection}  />)
                 }
             </div>
