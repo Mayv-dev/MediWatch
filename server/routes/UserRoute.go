@@ -12,4 +12,7 @@ func UserRoute(router *gin.Engine) {
 	router.POST("/user", controllers.CreateUser)
 	router.PUT("/user/:id", controllers.UpdateUser)
 	router.DELETE("/user/:id", controllers.DeleteUser)
+	router.POST("/user/register", controllers.RegisterUser)
+	router.POST("/user/login", controllers.LoginUser)
+	router.POST("/user/googlelogin", controllers.GoogleLoginUser)
 }

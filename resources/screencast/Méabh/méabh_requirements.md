@@ -1,0 +1,4 @@
+- System architecture
+- Contribution to the project so far
+- Server communication with Pi
+- Current issues and plans

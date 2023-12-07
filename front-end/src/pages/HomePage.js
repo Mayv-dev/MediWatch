@@ -1,13 +1,9 @@
 import MedicationBox from "../components/MedicationBox"
-
 function HomePage(props) {
         return (
-            <>
-            <div className="w-screen bg-commonBG-100 h-screen flex flex-col align-center justify-center items-center">
-                <MedicationBox userInfo={props.loggedInUser} />
-            </ div>
-            </>
+            <div className="w-screen h-screen flex flex-col align-center justify-center items-center">
+                <MedicationBox userInfo={props.loggedInUser} schedule={props.schedule}/>
+            </div>
         )
 }
-
 export default HomePage
