@@ -32,6 +32,7 @@ func main() {
 	routes.UserHistoryRoute(router)
 	routes.UserScheduleRouter(router)
 	routes.UserMedicationRouter(router)
+	routes.UserEventRoute(router)
 
 	pbnb := configs.ConnectPubnub()
 
