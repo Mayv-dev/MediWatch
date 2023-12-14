@@ -36,6 +36,7 @@ function ScheduleMenu(props) {
             return
         }
         setInputError(false)
+        setMissingValues(["bg-white","bg-white","bg-white","bg-white"])
 
         fetch(`${SERVER_HOST}/user/${props.userID}/schedule`, {
             method: "PUT",
