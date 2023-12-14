@@ -19,7 +19,11 @@ function MedicationBox(props) {
                     <BoxCompartment key={item.id} identifier={item.id} schedule={schedule} colour={chosenBox === item.id} onSelection={handleSelection}  />)
                 }
             </div>
-            {chosenBox.compartment !== null && <CompartmentMenu pillbox={pillbox} medications={medications} selectedCompartment={chosenBox} />}
+            {pillbox == undefined ? null 
+                : 
+                chosenBox.compartment !== null ? <CompartmentMenu pillbox={pillbox} medications={medications} selectedCompartment={chosenBox} /> 
+                    : 
+                    <h1 class="text-white text-5xl text-center">Click a box to see it's scheduled doses</h1>}
         </div>
     )
 }
