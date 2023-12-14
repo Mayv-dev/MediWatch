@@ -91,6 +91,7 @@ function ScheduleMenu(props) {
                         newMedications.map(med => <li onClick={e => handleMedDelete(med)} className="border-2 border-black rounded-md bg-white hover:bg-red-400 mx-0.5 my-2 p-0.5 cursor-pointer">{med.name} <span className="text-red-600">x</span></li>)}
                     </ul>
                     <select className={"flex flex-col border-2 border-gray-300 rounded-md w-4/6 mx-auto "+missingValues[0]} name="Medication" onChange={e => handleMedSelect(e.target.value)}>
+                        <option selected disabled></option>
                         {props.meds == undefined ? null : props.meds.map(med => <option value={med.id + "||" + med.name}>{med.name}</option>)}
                     </select>
                     
