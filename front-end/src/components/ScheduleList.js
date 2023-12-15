@@ -30,7 +30,7 @@ function ScheduleList(props) {
     
 
     useEffect(() => {
-        setDateConversion(props.schedule !== undefined ? {id: props.schedule.map(item => item.id), datetime: props.schedule.map(item => new Date(item.datetime))}: null)
+        setDateConversion(props.schedule !== undefined ? {id: props.schedule.sort((a,b)=> a.datetime>b.datetime?1:-1).map(item => item.id), datetime: props.schedule.sort((a,b)=> a.datetime>b.datetime?1:-1).map(item => new Date(item.datetime))}: null)
     },[props.schedule])
     handleDateConvert()
     
