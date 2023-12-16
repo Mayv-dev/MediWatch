@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import {SERVER_HOST} from "../config/global_constants";
+import {SERVER_HOST} from "../config/private_global_constants";
 
 function ScheduleMenu(props) { 
     let [inputError,setInputError] = useState(false)

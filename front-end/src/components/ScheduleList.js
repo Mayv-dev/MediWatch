@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import {SERVER_HOST} from "../config/global_constants";
+import {SERVER_HOST} from "../config/private_global_constants";
 
 function ScheduleList(props) { 
     const monthStrings = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]

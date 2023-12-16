@@ -1,4 +1,4 @@
-import {SERVER_HOST, REACT_PUBLIC_GOOGLE_CLIENT_ID} from "../config/global_constants";
+import {SERVER_HOST, REACT_PUBLIC_GOOGLE_CLIENT_ID} from "../config/private_global_constants";
 import { GoogleLogin } from 'react-google-login';
 import { useState, useEffect } from "react"
 import { gapi } from 'gapi-script';
