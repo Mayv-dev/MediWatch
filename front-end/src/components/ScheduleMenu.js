@@ -11,6 +11,8 @@ function ScheduleMenu(props) {
 
     let [missingValues,setMissingValues] = useState(["bg-white","bg-white","bg-white","bg-white"])
 
+    
+
     const handleNewDose = (value) => {
         let hours,minutes,dateTime,medIDs,e;
         try {
@@ -38,6 +40,13 @@ function ScheduleMenu(props) {
         setInputError(false)
         setMissingValues(["bg-white","bg-white","bg-white","bg-white"])
 
+        for (let i = 0; i < props.schedule.length; i++) {
+            console.log(props.schedule[i].datetime)
+            if(Date.parse(props.schedule[i].datetime) == Date.parse(dateTime)) {
+                console.log("Write code for updating a schedule here when route is available")
+                return
+            }
+        }
         fetch(`${SERVER_HOST}/user/${props.userID}/schedule`, {
             method: "PUT",
             mode: "cors",
