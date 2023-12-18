@@ -43,8 +43,13 @@ function ScheduleMenu(props) {
         for (let i = 0; i < props.schedule.length; i++) {
             console.log(props.schedule[i].datetime)
             if(Date.parse(props.schedule[i].datetime) == Date.parse(dateTime)) {
-                console.log("Write code for updating a schedule here when route is available")
-                return
+                fetch(`${SERVER_HOST}/user/${props.userID}/schedule/${props.schedule[i].id}`, {
+                    method: "DELETE",
+                    mode: "cors",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
             }
         }
         fetch(`${SERVER_HOST}/user/${props.userID}/schedule`, {
