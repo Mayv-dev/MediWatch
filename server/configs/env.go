@@ -46,3 +46,13 @@ func GetChannel() string {
 
 	return os.Getenv(("PUBNUB_CHANNEL"))
 }
+
+func GetPNCipherKey() string {
+	err := godotenv.Load()
+
+	if err != nil {
+		log.Fatal("Error loading .env file.")
+	}
+
+	return os.Getenv(("CIPHER_KEY"))
+}
