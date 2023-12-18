@@ -101,7 +101,7 @@ function DatesBar(props) {
 
     return (
         <div className="flex flex-col items-center justify-center space-y-2">
-            {props.schedule == undefined ? <h1>No schedule has been set</h1> :
+            {props.schedule == undefined ? <h1 class="text-white text-5xl text-center">You have no doses set, you may add some in the <span class="text-[#dddd55]">Doses</span> page</h1> :
             <div className="flex items-center space-x-2">
                 <button
                     className="bg-slate-500 rounded-sm p-1"

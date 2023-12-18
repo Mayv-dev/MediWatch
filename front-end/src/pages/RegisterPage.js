@@ -1,4 +1,4 @@
-import { SERVER_HOST} from "../config/global_constants";
+import { SERVER_HOST} from "../config/private_global_constants";
 import { useState } from "react"
 import validator from 'validator';
 
