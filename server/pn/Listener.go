@@ -13,7 +13,7 @@ func Listen(pbnb *pubnub.PubNub, wg *sync.WaitGroup) {
 	listener := pubnub.NewListener()
 	pbnb.AddListener(listener)
 	pbnb.Subscribe().Channels([]string{configs.GetChannel()}).Execute()
-	fmt.Println()
+
 	for {
 		select {
 		case status := <-listener.Status:

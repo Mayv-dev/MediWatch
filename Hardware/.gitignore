@@ -3,3 +3,5 @@ Testing/
 
 client.py
 server.py
+.env
+

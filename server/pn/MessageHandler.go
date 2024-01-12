@@ -51,4 +51,6 @@ func HandleMessage(message *pubnub.PNMessage) {
 			return
 		}
 	}
+
+	CheckUpdate()
 }

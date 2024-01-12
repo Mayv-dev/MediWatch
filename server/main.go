@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"mediwatch/server/configs"
 	"mediwatch/server/pn"
 	"mediwatch/server/routes"
@@ -32,11 +33,17 @@ func main() {
 	routes.UserHistoryRoute(router)
 	routes.UserScheduleRouter(router)
 	routes.UserMedicationRouter(router)
+	routes.UserEventRoute(router)
 
-	pbnb := configs.ConnectPubnub()
+	pbnb, err := configs.ConnectPubnub()
+	if err != nil {
+		log.Fatal(err.Error())
+		return
+	}
 
 	wg.Add(1)
 	go pn.Listen(pbnb, wg)
+	go pn.Publish(pbnb, wg)
 
 	//Dev
 	router.Run("localhost:4000")

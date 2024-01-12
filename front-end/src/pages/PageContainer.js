@@ -5,7 +5,7 @@ import HomePage from "./HomePage";
 import CalendarPage from "./CalendarPage";
 import SchedulePage from "./SchedulePage";
 import RegisterPage from "./RegisterPage";
-import { DARK_BG, DARK_NAV, LIGHT_BG, LIGHT_NAV } from "../config/global_constants";
+import { DARK_BG, DARK_NAV, LIGHT_BG, LIGHT_NAV } from "../config/public_global_constants";
 
 function PageContainer() {
     const [userId, setUserId] = useState()

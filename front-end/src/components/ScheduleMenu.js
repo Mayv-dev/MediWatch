@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import {SERVER_HOST} from "../config/global_constants";
+import {SERVER_HOST} from "../config/private_global_constants";
 
 function ScheduleMenu(props) { 
     let [inputError,setInputError] = useState(false)
@@ -10,6 +10,8 @@ function ScheduleMenu(props) {
     let [newCompartment,setNewCompartment] = useState()
 
     let [missingValues,setMissingValues] = useState(["bg-white","bg-white","bg-white","bg-white"])
+
+    
 
     const handleNewDose = (value) => {
         let hours,minutes,dateTime,medIDs,e;
@@ -36,7 +38,20 @@ function ScheduleMenu(props) {
             return
         }
         setInputError(false)
+        setMissingValues(["bg-white","bg-white","bg-white","bg-white"])
 
+        for (let i = 0; i < props.schedule.length; i++) {
+            console.log(props.schedule[i].datetime)
+            if(Date.parse(props.schedule[i].datetime) == Date.parse(dateTime)) {
+                fetch(`${SERVER_HOST}/user/${props.userID}/schedule/${props.schedule[i].id}`, {
+                    method: "DELETE",
+                    mode: "cors",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+            }
+        }
         fetch(`${SERVER_HOST}/user/${props.userID}/schedule`, {
             method: "PUT",
             mode: "cors",
@@ -91,6 +106,7 @@ function ScheduleMenu(props) {
                         newMedications.map(med => <li onClick={e => handleMedDelete(med)} className="border-2 border-black rounded-md bg-white hover:bg-red-400 mx-0.5 my-2 p-0.5 cursor-pointer">{med.name} <span className="text-red-600">x</span></li>)}
                     </ul>
                     <select className={"flex flex-col border-2 border-gray-300 rounded-md w-4/6 mx-auto "+missingValues[0]} name="Medication" onChange={e => handleMedSelect(e.target.value)}>
+                        <option selected disabled></option>
                         {props.meds == undefined ? null : props.meds.map(med => <option value={med.id + "||" + med.name}>{med.name}</option>)}
                     </select>
                     
