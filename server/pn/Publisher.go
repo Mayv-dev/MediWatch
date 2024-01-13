@@ -22,6 +22,9 @@ func Publish(pbnb *pubnub.PubNub, wg *sync.WaitGroup) {
 	}
 }
 
-func AddMessageToQueue(message string) {
+func AddMessageToQueue(msg string) {
+	message := map[string]interface{}{
+		"msg": msg,
+	}
 	messageQueue.PushBack(message)
 }
